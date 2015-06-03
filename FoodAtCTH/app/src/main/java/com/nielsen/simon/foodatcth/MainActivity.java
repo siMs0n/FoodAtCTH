@@ -27,15 +27,18 @@ public class MainActivity extends AppCompatActivity {
 
     ActionBarDrawerToggle mDrawerToggle;
 
-    String appName = getResources().getString(R.string.app_name);
-    String tagLine = getResources().getString(R.string.tag_line);
-    int appIcon = R.drawable.ic_drawer;
+    String appName;
+    String tagLine;
+    int appIcon = R.mipmap.ic_launcher;
     //---------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        appName = this.getResources().getString(R.string.app_name);
+        tagLine = this.getResources().getString(R.string.tag_line);
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
