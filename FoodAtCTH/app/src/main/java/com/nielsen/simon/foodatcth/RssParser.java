@@ -7,12 +7,17 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Simon on 2015-06-03.
  */
 public class RssParser {
+
+    List<RssItem> rssItems = new ArrayList<RssItem>();
+
+    private static final String ns = null;
 
     public List<RssItem> parse(InputStream inputStream) throws IOException, XmlPullParserException {
         try{
@@ -25,7 +30,73 @@ public class RssParser {
         }
     }
 
-    private List<RssItem> readFeed(XmlPullParser parser){
-       return null;
+    private List<RssItem> readFeed(XmlPullParser parser) throws IOException, XmlPullParserException {
+        parser.require(XmlPullParser.START_TAG, ns, "channel");
+        while(parser.next()!= XmlPullParser.END_TAG) {
+            if(parser.getEventType() != XmlPullParser.START_TAG){
+                continue;
+            }
+            String name = parser.getName();
+            if (name.equals("item")) {
+                rssItems.add(readMenuItem(parser));
+            }else{
+                skip(parser);
+            }
+        }
+        return rssItems;
+    }
+
+    private RssItem readMenuItem(XmlPullParser parser) throws IOException, XmlPullParserException {
+        String title = "Empty item";
+        String description = "Empty description";
+
+        while(parser.next()!= XmlPullParser.END_TAG) {
+            if (parser.getEventType() != XmlPullParser.START_TAG) {
+                continue;
+            }
+
+            String name = parser.getName();
+            if(name.equals("title")){
+                title = readText(parser);
+            }else if(name.equals("description")){
+                description = readText(parser);
+            }else{
+                skip(parser);
+            }
+        }
+        return new RssItem(title, description);
+    }
+
+    // For the tags title and description, extracts their text values.
+    private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
+        String result = "";
+        if (parser.next() == XmlPullParser.TEXT) {
+            result = parser.getText();
+            parser.nextTag();
+        }
+        return result;
+    }
+
+    /**
+     * Skips the tag the parser currently is at
+     * @param parser
+     * @throws XmlPullParserException
+     * @throws IOException
+     */
+    private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
+        if (parser.getEventType() != XmlPullParser.START_TAG) {
+            throw new IllegalStateException();
+        }
+        int depth = 1;
+        while (depth != 0) {
+            switch (parser.next()) {
+                case XmlPullParser.END_TAG:
+                    depth--;
+                    break;
+                case XmlPullParser.START_TAG:
+                    depth++;
+                    break;
+            }
+        }
     }
 }
