@@ -2,20 +2,21 @@ package com.nielsen.simon.foodatcth;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.support.v7.recyclerview.*;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                // code here will execute once the drawer is opened( As I dont want anything happened when drawer is
+                // code here will execute once the drawer is opened( As I don't want anything happened when drawer is
                 // open I am not going to put anything here)
             }
 
@@ -76,9 +77,10 @@ public class MainActivity extends AppCompatActivity {
 
         drawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String TODAY = sdf.format(new Date());
         RssTask rssTask = new RssTask(getApplicationContext());
-        rssTask.execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/2015-05-29.rss");
+        rssTask.execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+TODAY+".rss");
     }
 
     private class RssTask extends AsyncTask<String, Void, List<RssItem>> {
