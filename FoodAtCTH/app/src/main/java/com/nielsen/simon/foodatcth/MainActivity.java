@@ -1,5 +1,7 @@
 package com.nielsen.simon.foodatcth;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,10 @@ import android.support.v7.recyclerview.*;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+
+import java.io.IOException;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,6 +77,42 @@ public class MainActivity extends AppCompatActivity {
         drawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
 
+        RssTask rssTask = new RssTask(getApplicationContext());
+        rssTask.execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/2015-05-29.rss");
+    }
+
+    private class RssTask extends AsyncTask<String, Void, List<RssItem>> {
+        private Context context;
+        public RssTask(Context c){
+            context = c;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            startLoadingAnimation();
+        }
+
+        @Override
+        protected List<RssItem> doInBackground(String... urls) {
+
+            try{
+                RssReader rssReader = new RssReader(urls[0]);
+                rssReader.readRss();
+                return rssReader.getItems();
+            }catch (IOException e){
+                Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<RssItem> rssItems) {
+            super.onPostExecute(rssItems);
+            loadFoodMenu(rssItems);
+            dismissLoadingAnimation();
+        }
     }
 
     @Override
@@ -93,5 +135,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startLoadingAnimation(){
+
+    }
+
+    private void dismissLoadingAnimation(){
+
+    }
+
+    private void loadFoodMenu(List<RssItem> rssItems){
+
     }
 }
