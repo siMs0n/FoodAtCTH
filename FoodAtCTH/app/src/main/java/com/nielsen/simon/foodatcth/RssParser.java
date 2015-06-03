@@ -3,7 +3,9 @@ package com.nielsen.simon.foodatcth;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
@@ -12,12 +14,18 @@ import java.util.List;
  */
 public class RssParser {
 
-    public List<RssItem> parse(InputStream inputStream){
-        XmlPullParser parser = Xml.newPullParser();
-        return readFeed(parser);
+    public List<RssItem> parse(InputStream inputStream) throws IOException, XmlPullParserException {
+        try{
+            XmlPullParser parser = Xml.newPullParser();
+            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
+            parser.setInput(inputStream, null);
+            return readFeed(parser);
+        }finally {
+            inputStream.close();
+        }
     }
 
-    public List<RssItem> readFeed(XmlPullParser parser){
+    private List<RssItem> readFeed(XmlPullParser parser){
        return null;
     }
 }

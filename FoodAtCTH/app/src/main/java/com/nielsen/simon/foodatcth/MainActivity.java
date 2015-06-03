@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 rssReader.readRss();
                 return rssReader.getItems();
             }catch (IOException e){
-                Toast.makeText(context,e.getMessage(),Toast.LENGTH_SHORT);
+                Toast.makeText(context,context.getResources().getString(R.string.menu_error),Toast.LENGTH_SHORT);
             }
 
             return null;

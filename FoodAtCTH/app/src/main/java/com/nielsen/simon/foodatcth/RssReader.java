@@ -1,11 +1,11 @@
 package com.nielsen.simon.foodatcth;
 
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +14,6 @@ import java.util.List;
 public class RssReader {
 
     private String rssUrl;
-    private String errorMessage = "Couldn't get menu for you.";
     private List<RssItem> rssItems;
 
     public RssReader(String rssUrl){
@@ -22,23 +21,14 @@ public class RssReader {
     }
 
     public void readRss() throws IOException{
-        InputStream inputStream = null;
         try {
-            inputStream = downloadUrl(rssUrl);
+            InputStream inputStream = downloadUrl(rssUrl);
             RssParser rssParser = new RssParser();
             rssItems = rssParser.parse(inputStream);
-        }catch (MalformedURLException m){
-            throw new IOException(errorMessage);
         }catch (IOException ioException){
-            throw new IOException(errorMessage);
-        }finally {
-            if(inputStream!=null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-
-                }
-            }
+            throw new IOException();
+        }catch (XmlPullParserException e){
+            throw new IOException();
         }
 
     }
