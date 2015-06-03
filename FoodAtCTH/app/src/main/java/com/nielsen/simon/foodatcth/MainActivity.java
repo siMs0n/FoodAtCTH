@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Variables for Navigation Drawer ------------------------------------
     private String titles[] = {"Campus Johanneberg","Campus Lindholmen","Sannegården","Inställningar","Hjälp och feedback"};
-    private int icons[] = {R.drawable.ic_drawer,R.drawable.ic_drawer,R.drawable.ic_drawer,R.drawable.ic_drawer,R.drawable.ic_drawer};
+    private int icons[] = {R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher};
 
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
@@ -70,8 +70,6 @@ public class MainActivity extends AppCompatActivity {
 
         drawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
-
-        //NavigationDrawerFragment drawerFragment = (NavigationDrawerFragment) getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
     }
 

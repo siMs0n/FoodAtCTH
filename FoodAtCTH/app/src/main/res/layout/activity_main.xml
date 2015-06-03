@@ -21,14 +21,10 @@
             android:text="@string/hello_world" />
 
     </RelativeLayout>
-    <!--<fragment android:id="@+id/navigation_drawer"
-        android:layout_width="@dimen/navigation_drawer_width" android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:name="com.nielsen.simon.foodatcth.NavigationDrawerFragment"
-        tools:layout="@layout/fragment_navigation_drawer" />-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/RecyclerView"
-        android:layout_width="360dp"
+        android:layout_width="@dimen/navigation_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:background="#ffffff"

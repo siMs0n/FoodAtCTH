@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="48dp"
     android:orientation="horizontal"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
@@ -9,17 +9,17 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginLeft="2dp"
         android:id="@+id/rowIcon"
-        android:layout_marginLeft="16dp"
         android:src="@mipmap/ic_launcher"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="12dp"
-        android:paddingTop="4dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_horizontal"
+        android:textAppearance="?android:attr/textAppearanceListItem"
         android:text="Medium text"
         android:id="@+id/rowText"/>
 
