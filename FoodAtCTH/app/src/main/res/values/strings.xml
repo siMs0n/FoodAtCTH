@@ -16,7 +16,7 @@
 
     <string name="tag_line">When you are hungry</string>
 
-    <string name="menu_error">Couldn't load the menu for you</string>
+    <string name="menu_error">Couldn\'t load the menu for you</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
