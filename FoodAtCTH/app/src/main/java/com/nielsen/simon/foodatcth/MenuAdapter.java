@@ -46,8 +46,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     // which view type is being created 1 for item row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.title.setText(rssItems.get(position-1).getTitle());
-            holder.description.setText(rssItems.get(position-1).getDescription());
+            holder.title.setText(rssItems.get(position).getTitle());
+            holder.description.setText(rssItems.get(position).getDescription());
     }
 
     // This method returns the number of items present in the list
