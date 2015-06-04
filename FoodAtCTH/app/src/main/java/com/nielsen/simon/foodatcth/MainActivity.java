@@ -28,9 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private String titles[] = {"Campus Johanneberg","Campus Lindholmen","Sannegården","Inställningar","Hjälp och feedback"};
     private int icons[] = {R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher};
 
-    RecyclerView mRecyclerView;
-    RecyclerView.Adapter drawerAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
+    RecyclerView drawerRecyclerView, menuRecyclerView;
+    RecyclerView.Adapter drawerAdapter, menuAdapter;
+    RecyclerView.LayoutManager drawerLayoutManager, menuLayoutManager;
     DrawerLayout drawer;
 
     ActionBarDrawerToggle mDrawerToggle;
@@ -51,13 +51,15 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
-        mRecyclerView.setHasFixedSize(true);
+        // Create Navigation Drawer -------------------------------------------------
+
+        drawerRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
+        drawerRecyclerView.setHasFixedSize(true);
         drawerAdapter = new DrawerAdapter(titles, icons, appName, tagLine, appIcon);
 
-        mRecyclerView.setAdapter(drawerAdapter);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        drawerRecyclerView.setAdapter(drawerAdapter);
+        drawerLayoutManager = new LinearLayoutManager(this);
+        drawerRecyclerView.setLayoutManager(drawerLayoutManager);
 
         drawer = (DrawerLayout) findViewById(R.id.drawerlayout);
         mDrawerToggle = new ActionBarDrawerToggle(this,drawer,toolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close) {
@@ -78,10 +80,20 @@ public class MainActivity extends AppCompatActivity {
 
         drawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.syncState();
+        // End Navigation Drawer -------------------------------------------------
+
+        //Set up basic menu ------------------------------------------------------
+
+
+
+        // End set up basic menu -------------------------------------------------
+
+        // Read rss feed ---------------------------------------------------------
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String TODAY = sdf.format(new Date());
         RssTask rssTask = new RssTask(this);
         rssTask.execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+TODAY+".rss");
+        // end read rss feed -----------------------------------------------------
     }
 
     private class RssTask extends AsyncTask<String, Void, List<RssItem>> {
@@ -152,6 +164,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFoodMenu(List<RssItem> rssItems){
+
+        menuRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
+        menuRecyclerView.setHasFixedSize(true);
+        menuAdapter = new MenuAdapter(rssItems);
+
+        menuRecyclerView.setAdapter(menuAdapter);
+        menuLayoutManager = new LinearLayoutManager(this);
+        menuRecyclerView.setLayoutManager(menuLayoutManager);
+
         TextView hello = (TextView)findViewById(R.id.hello);
         if(rssItems != null) {
             hello.setText(rssItems.get(0).getDescription());
