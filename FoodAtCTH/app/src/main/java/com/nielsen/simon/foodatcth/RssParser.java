@@ -1,5 +1,6 @@
 package com.nielsen.simon.foodatcth;
 
+import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -24,6 +25,8 @@ public class RssParser {
             XmlPullParser parser = Xml.newPullParser();
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(inputStream, null);
+            parser.nextTag(); //Skip to the menu items
+            parser.nextTag(); //Our items is inside this tag
             return readFeed(parser);
         }finally {
             inputStream.close();

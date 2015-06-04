@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -102,8 +103,7 @@ public class MainActivity extends AppCompatActivity {
 
             try{
                 RssReader rssReader = new RssReader(urls[0]);
-                rssReader.readRss();
-                return rssReader.getItems();
+                return rssReader.readRss();
             }catch (IOException e){
                 activity.runOnUiThread(new Runnable() {
                     public void run() {

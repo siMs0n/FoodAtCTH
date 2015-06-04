@@ -1,5 +1,7 @@
 package com.nielsen.simon.foodatcth;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
@@ -20,20 +22,19 @@ public class RssReader {
         this.rssUrl = rssUrl;
     }
 
-    public void readRss() throws IOException{
+    public List<RssItem> readRss() throws IOException{
         try {
             InputStream inputStream = downloadUrl(rssUrl);
+            Log.v("myApp", inputStream.toString());
             RssParser rssParser = new RssParser();
             rssItems = rssParser.parse(inputStream);
         }catch (IOException ioException){
+            Log.v("myApp", "IOException!");
             throw new IOException();
         }catch (XmlPullParserException e){
+            Log.v("myApp", "XMLException!");
             throw new IOException();
         }
-
-    }
-
-    public List<RssItem> getItems(){
         return rssItems;
     }
 
