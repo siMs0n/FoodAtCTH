@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class RssParser {
 
-    List<RssItem> rssItems = new ArrayList<RssItem>();
+    List<RssItem> rssItems = new ArrayList<>();
 
     private static final String ns = null;
 
@@ -74,7 +74,7 @@ public class RssParser {
     private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
         String result = "";
         if (parser.next() == XmlPullParser.TEXT) {
-            result = parser.getText();
+            result = parser.getText().split("@")[0]; //Removes the '@' bit
             parser.nextTag();
         }
         return result;
@@ -82,9 +82,6 @@ public class RssParser {
 
     /**
      * Skips the tag the parser currently is at
-     * @param parser
-     * @throws XmlPullParserException
-     * @throws IOException
      */
     private void skip(XmlPullParser parser) throws XmlPullParserException, IOException {
         if (parser.getEventType() != XmlPullParser.START_TAG) {

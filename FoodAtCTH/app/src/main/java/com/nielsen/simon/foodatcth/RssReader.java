@@ -25,14 +25,11 @@ public class RssReader {
     public List<RssItem> readRss() throws IOException{
         try {
             InputStream inputStream = downloadUrl(rssUrl);
-            Log.v("myApp", inputStream.toString());
             RssParser rssParser = new RssParser();
             rssItems = rssParser.parse(inputStream);
         }catch (IOException ioException){
-            Log.v("myApp", "IOException!");
             throw new IOException();
         }catch (XmlPullParserException e){
-            Log.v("myApp", "XMLException!");
             throw new IOException();
         }
         return rssItems;
