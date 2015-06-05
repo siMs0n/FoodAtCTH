@@ -51,7 +51,11 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
             holder.title.setText(rssItems.get(position).getTitle());
-            holder.description.setText(rssItems.get(position).getDescription());
+            if(rssItems.get(position).getDescription().isEmpty()){
+                holder.description.setText("Ingen " + rssItems.get(position).getTitle() + " idag.");
+            }else{
+                holder.description.setText(rssItems.get(position).getDescription());
+            }
     }
 
     // This method returns the number of items present in the list

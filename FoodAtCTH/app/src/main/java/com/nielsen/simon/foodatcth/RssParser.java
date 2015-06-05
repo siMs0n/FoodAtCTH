@@ -74,7 +74,14 @@ public class RssParser {
     private String readText(XmlPullParser parser) throws IOException, XmlPullParserException {
         String result = "";
         if (parser.next() == XmlPullParser.TEXT) {
-            result = parser.getText().split("@")[0]; //Removes the '@' bit
+            String[] tmp = parser.getText().split("@"); //Removes the '@' bit
+            if(tmp.length>0){
+                result = tmp[0];
+            }else if(parser.getText().equals("@")){
+                result = "";
+            }else{
+                result = parser.getText();
+            }
             parser.nextTag();
         }
         return result;
