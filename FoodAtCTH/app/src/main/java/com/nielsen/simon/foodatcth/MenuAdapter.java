@@ -31,7 +31,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     }
 
     public void updateRssList(List<RssItem> rssItems){
-        this.rssItems = rssItems;
+        this.rssItems.addAll(rssItems);
     }
 
     @Override

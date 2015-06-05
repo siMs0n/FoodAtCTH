@@ -105,9 +105,6 @@ public class MainActivity extends AppCompatActivity {
         RssTask rssTask = new RssTask(this);
         for(int i = 0; i < 5; i++){
             String date = sdf.format(cal.getTime());
-            Log.v("myApp", date);
-            TextView tv = (TextView) findViewById(R.id.hello);
-            tv.setText(date);
             new RssTask(this).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+date+".rss");
             cal.add(Calendar.DAY_OF_WEEK, 1);
         }
