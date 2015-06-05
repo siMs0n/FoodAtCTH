@@ -18,12 +18,12 @@
         android:src="@drawable/meat" />-->
 
     <ImageView
-        android:id="@+id/circleIcon"
-        android:layout_width="wrap_content"
+        android:id="@+id/menuItemImage"
+        android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_marginLeft="2dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/meat" />
+        android:src="@drawable/fish" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:text="Medium text"
-        android:layout_toLeftOf="@+id/circleIcon"
+        android:layout_toLeftOf="@+id/menuItemImage"
         android:layout_marginLeft="16dp"
         android:id="@+id/menuItemTitle"/>
 
@@ -44,7 +44,7 @@
         android:textSize="14sp"
         android:text="Medium text"
         android:layout_marginLeft="16dp"
-        android:layout_toLeftOf="@+id/circleIcon"
+        android:layout_toLeftOf="@+id/menuItemImage"
         android:layout_below="@+id/menuItemTitle"
         android:id="@+id/menuItemDescription"/>
     </LinearLayout>

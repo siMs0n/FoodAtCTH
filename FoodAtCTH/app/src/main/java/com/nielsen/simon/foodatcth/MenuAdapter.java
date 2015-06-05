@@ -20,17 +20,19 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         this.rssItems = rssItems;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         public TextView title, description;
+        public ImageView image;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.menuItemTitle);
             description = (TextView) itemView.findViewById(R.id.menuItemDescription);
+            image = (ImageView) itemView.findViewById(R.id.menuItemImage);
         }
     }
 
-    public void updateRssList(List<RssItem> rssItems){
+    public void updateRssList(List<RssItem> rssItems) {
         this.rssItems.addAll(rssItems);
     }
 
@@ -50,12 +52,29 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     // which view type is being created 1 for item row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-            holder.title.setText(rssItems.get(position).getTitle());
-            if(rssItems.get(position).getDescription().isEmpty()){
-                holder.description.setText("Ingen " + rssItems.get(position).getTitle() + " idag.");
-            }else{
-                holder.description.setText(rssItems.get(position).getDescription());
-            }
+        holder.title.setText(rssItems.get(position).getTitle());
+        if (rssItems.get(position).getDescription().isEmpty()) {
+            holder.description.setText("Ingen " + rssItems.get(position).getTitle() + " idag.");
+        } else {
+            holder.description.setText(rssItems.get(position).getDescription());
+        }
+        switch (rssItems.get(position).getTitle()){
+            case "Classic Kött":
+                holder.image.setImageResource(R.drawable.meat);
+                break;
+            case "Classic Fisk":
+                holder.image.setImageResource(R.drawable.fish);
+                break;
+            case "Veckans Soppa":
+                holder.image.setImageResource(R.drawable.soup);
+                break;
+            case "Xpress":
+                holder.image.setImageResource(R.drawable.xpress);
+                break;
+            case "Gröna väggen":
+                holder.image.setImageResource(R.drawable.veg);
+                break;
+        }
     }
 
     // This method returns the number of items present in the list
