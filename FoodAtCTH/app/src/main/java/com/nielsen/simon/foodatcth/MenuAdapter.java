@@ -30,6 +30,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         }
     }
 
+    public void updateRssList(List<RssItem> rssItems){
+        this.rssItems = rssItems;
+    }
+
     @Override
     public MenuAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item, parent, false); //Inflating the layout

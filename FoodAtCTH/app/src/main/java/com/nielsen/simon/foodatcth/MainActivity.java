@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -85,7 +86,13 @@ public class MainActivity extends AppCompatActivity {
 
         //Set up basic menu ------------------------------------------------------
 
+        menuRecyclerView = (RecyclerView) findViewById(R.id.MenuRecyclerView);
+        menuRecyclerView.setHasFixedSize(true);
+        menuAdapter = new MenuAdapter(new ArrayList<RssItem>());
+
+        menuRecyclerView.setAdapter(menuAdapter);
         menuLayoutManager = new LinearLayoutManager(this);
+        menuRecyclerView.setLayoutManager(menuLayoutManager);
         Log.v("myApp",menuLayoutManager.toString());
 
         // End set up basic menu -------------------------------------------------
@@ -167,19 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadFoodMenu(List<RssItem> rssItems){
 
-        menuRecyclerView = (RecyclerView) findViewById(R.id.MenuRecyclerView);
-        menuRecyclerView.setHasFixedSize(true);
-        menuAdapter = new MenuAdapter(rssItems);
-
-        menuRecyclerView.setAdapter(menuAdapter);
-
-        menuRecyclerView.setLayoutManager(menuLayoutManager);
-
-        TextView hello = (TextView)findViewById(R.id.hello);
-        if(rssItems != null) {
-            hello.setText(rssItems.get(0).getDescription());
-        }else{
-            hello.setText("It's null");
-        }
+        ((MenuAdapter)menuAdapter).updateRssList(rssItems);
+        menuAdapter.notifyDataSetChanged();
     }
 }
