@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Create Navigation Drawer -------------------------------------------------
 
-        drawerRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
+        drawerRecyclerView = (RecyclerView) findViewById(R.id.DrawerRecyclerView);
         drawerRecyclerView.setHasFixedSize(true);
         drawerAdapter = new DrawerAdapter(titles, icons, appName, tagLine, appIcon);
 
@@ -84,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Set up basic menu ------------------------------------------------------
 
-
+        menuLayoutManager = new LinearLayoutManager(this);
+        Log.v("myApp",menuLayoutManager.toString());
 
         // End set up basic menu -------------------------------------------------
 
@@ -165,12 +167,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadFoodMenu(List<RssItem> rssItems){
 
-        menuRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
+        menuRecyclerView = (RecyclerView) findViewById(R.id.MenuRecyclerView);
         menuRecyclerView.setHasFixedSize(true);
         menuAdapter = new MenuAdapter(rssItems);
 
         menuRecyclerView.setAdapter(menuAdapter);
-        menuLayoutManager = new LinearLayoutManager(this);
+
         menuRecyclerView.setLayoutManager(menuLayoutManager);
 
         TextView hello = (TextView)findViewById(R.id.hello);
