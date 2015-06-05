@@ -19,6 +19,7 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -98,10 +99,21 @@ public class MainActivity extends AppCompatActivity {
         // End set up basic menu -------------------------------------------------
 
         // Read rss feed ---------------------------------------------------------
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, 2);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        String TODAY = sdf.format(new Date());
         RssTask rssTask = new RssTask(this);
-        rssTask.execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+TODAY+".rss");
+        for(int i = 0; i < 5; i++){
+            String date = sdf.format(cal.getTime());
+            Log.v("myApp", date);
+            TextView tv = (TextView) findViewById(R.id.hello);
+            tv.setText(date);
+            new RssTask(this).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+date+".rss");
+            cal.add(Calendar.DAY_OF_WEEK, 1);
+        }
+        //String TODAY = sdf.format(new Date());
+
+
         // end read rss feed -----------------------------------------------------
     }
 
