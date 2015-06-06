@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.nielsen.simon.foodatcth.RssReader;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -54,7 +56,32 @@ public class CampusJohannebergFragment extends Fragment {
         if (getArguments() != null) {
             page = getArguments().getInt("page");
         }
+        menuAdapter = new MenuAdapter();
+        if (savedInstanceState != null) {
+            String[] titles = savedInstanceState.getStringArray("titles");
+            String[] descriptions = savedInstanceState.getStringArray("descriptions");
+            if (titles != null && descriptions!=null) {
+                ArrayList<RssItem> rssItems = new ArrayList<>();
+                for(int i = 0; i<titles.length ;i++){
+                    rssItems.add(new RssItem(titles[i],descriptions[i]));
+                }
+                ((MenuAdapter)menuAdapter).setRssItems(rssItems);
+            }
+        }
 
+    }
+    
+    public void onSavedInstanceState(Bundle savedState){
+        super.onSaveInstanceState(savedState);
+       List<RssItem> rssItems = ((MenuAdapter)menuAdapter).getRssItems();
+        String[] titles = new String[rssItems.size()];
+        String[] descriptions = new String[rssItems.size()];
+        for(int i = 0; i < rssItems.size(); i++){
+            titles[i] = rssItems.get(i).getTitle();
+            descriptions[i] = rssItems.get(i).getDescription();
+        }
+        savedState.putStringArray("titles", titles);
+        savedState.putStringArray("descriptions", descriptions);
     }
 
     @Override
@@ -62,12 +89,12 @@ public class CampusJohannebergFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_campus_johanneberg, container, false);
-
+        Log.v("myApp","Inflate fragment");
         //Set up basic menu ------------------------------------------------------
 
         menuRecyclerView = (RecyclerView) v.findViewById(R.id.MenuRecyclerView);
         menuRecyclerView.setHasFixedSize(true);
-        menuAdapter = new MenuAdapter();
+
 
         menuRecyclerView.setAdapter(menuAdapter);
         menuLayoutManager = new LinearLayoutManager(container.getContext());
@@ -119,7 +146,7 @@ public class CampusJohannebergFragment extends Fragment {
             }catch (IOException e){
                 activity.runOnUiThread(new Runnable() {
                     public void run() {
-                        Toast.makeText(activity, activity.getResources().getString(R.string.menu_error), Toast.LENGTH_SHORT);
+                        Toast.makeText(activity, activity.getResources().getString(R.string.menu_error), Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -130,6 +157,7 @@ public class CampusJohannebergFragment extends Fragment {
         @Override
         protected void onPostExecute(List<RssItem> rssItems) {
             super.onPostExecute(rssItems);
+            Log.v("myApp","Executed");
             loadFoodMenu(rssItems, day);
             dismissLoadingAnimation();
         }
@@ -144,6 +172,7 @@ public class CampusJohannebergFragment extends Fragment {
     }
 
     private void loadFoodMenu(List<RssItem> rssItems, String day){
+        Log.v("myApp",day+rssItems.size());
         ((MenuAdapter)menuAdapter).updateRssList(rssItems, day);
         menuAdapter.notifyDataSetChanged();
     }

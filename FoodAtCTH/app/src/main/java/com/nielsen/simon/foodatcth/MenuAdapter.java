@@ -55,6 +55,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         this.rssItems.addAll(rssItems);
     }
 
+    public void setRssItems(List<RssItem> items){
+        rssItems = items;
+    }
+
+    public List<RssItem> getRssItems(){
+        return rssItems;
+    }
+
     @Override
     public MenuAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v;
