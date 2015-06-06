@@ -3,6 +3,7 @@ package com.nielsen.simon.foodatcth;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -107,8 +108,11 @@ public class MainActivity extends AppCompatActivity {
         String[] tabTitles = {"Kårrestaurangen", "Linsen", "Hyllan"};
         tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS, tabTitles);
 
-        tabsPager = (ViewPager)findViewById(R.id.pager);
+        tabsPager = (ViewPager)findViewById(R.id.viewpager);
         tabsPager.setAdapter(tabsAdapter);
+
+        TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(tabsPager);
 
         //End set up tabs --------------------------------------------------------
 
