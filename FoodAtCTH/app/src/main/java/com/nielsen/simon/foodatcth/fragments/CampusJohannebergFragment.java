@@ -70,8 +70,8 @@ public class CampusJohannebergFragment extends Fragment {
         }
 
     }
-    
-    public void onSavedInstanceState(Bundle savedState){
+
+    public void onSaveInstanceState(Bundle savedState){
         super.onSaveInstanceState(savedState);
        List<RssItem> rssItems = ((MenuAdapter)menuAdapter).getRssItems();
         String[] titles = new String[rssItems.size()];
