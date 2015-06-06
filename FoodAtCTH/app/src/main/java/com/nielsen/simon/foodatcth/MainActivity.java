@@ -182,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadFoodMenu(List<RssItem> rssItems){
-
         ((MenuAdapter)menuAdapter).updateRssList(rssItems);
         menuAdapter.notifyDataSetChanged();
     }
