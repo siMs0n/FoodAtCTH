@@ -14,26 +14,20 @@
             android:id="@+id/app_bar"
             layout="@layout/app_bar" />
 
-        <include
-            android:id="@+id/tabs"
-            layout="@layout/fragment_pager" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/app_bar"
-            android:id="@+id/hello"
-            android:text="@string/hello_world" />
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/MenuRecyclerView"
+        <android.support.design.widget.TabLayout
+            android:id="@+id/sliding_tabs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/app_bar"
-            android:background="#ffffff"
-            android:scrollbars="vertical">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/app_bar"
+            app:tabMode="scrollable" />
 
-        </android.support.v7.widget.RecyclerView>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_below="@id/sliding_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:background="@android:color/white" />
 
     </RelativeLayout>
 

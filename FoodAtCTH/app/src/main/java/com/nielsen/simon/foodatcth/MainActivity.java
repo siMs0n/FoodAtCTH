@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         // End Navigation Drawer -------------------------------------------------
 
         //Set up basic menu ------------------------------------------------------
-
+        /**
         menuRecyclerView = (RecyclerView) findViewById(R.id.MenuRecyclerView);
         menuRecyclerView.setHasFixedSize(true);
         menuAdapter = new MenuAdapter();
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         //New version
         //menuRecyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
-        menuRecyclerView.setLayoutManager(menuLayoutManager);
+        menuRecyclerView.setLayoutManager(menuLayoutManager);*/
 
         // End set up basic menu -------------------------------------------------
 
@@ -110,24 +110,10 @@ public class MainActivity extends AppCompatActivity {
         tabsPager = (ViewPager)findViewById(R.id.pager);
         tabsPager.setAdapter(tabsAdapter);
 
-        // Watch for button clicks.
-        Button button = (Button)findViewById(R.id.goto_first);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                tabsPager.setCurrentItem(0);
-            }
-        });
-        button = (Button)findViewById(R.id.goto_last);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                tabsPager.setCurrentItem(NUM_ITEMS-1);
-            }
-        });
-
         //End set up tabs --------------------------------------------------------
 
         // Read rss feed ---------------------------------------------------------
-        Calendar cal = Calendar.getInstance();
+        /*Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_WEEK, 2);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf2 = new SimpleDateFormat("EEEE");
@@ -136,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
             String day = sdf2.format(cal.getTime());
             new RssTask(this, day).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+date+".rss");
             cal.add(Calendar.DAY_OF_WEEK, 1);
-        }
+        }*/
         //String TODAY = sdf.format(new Date());
 
 
