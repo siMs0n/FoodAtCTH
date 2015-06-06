@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     TabsAdapter tabsAdapter;
     ViewPager tabsPager;
-    static final int NUM_ITEMS = 10;
+    static final int NUM_ITEMS = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +104,8 @@ public class MainActivity extends AppCompatActivity {
 
         //Set up tabs ------------------------------------------------------------
 
-        tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS);
+        String[] tabTitles = {"Kårrestaurangen", "Linsen", "Hyllan"};
+        tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS, tabTitles);
 
         tabsPager = (ViewPager)findViewById(R.id.pager);
         tabsPager.setAdapter(tabsAdapter);
