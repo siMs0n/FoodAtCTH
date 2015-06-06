@@ -3,6 +3,7 @@ package com.nielsen.simon.foodatcth;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.SimpleAdapter;
+import android.widget.Button;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -32,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.Adapter drawerAdapter, menuAdapter;
     RecyclerView.LayoutManager drawerLayoutManager, menuLayoutManager;
     DrawerLayout drawer;
-    SimpleAdapter mAdapter;
 
     ActionBarDrawerToggle mDrawerToggle;
 
@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
     String tagLine;
     int appIcon = R.mipmap.ic_launcher;
     //---------------------------------------------------------------------
+
+    TabsAdapter tabsAdapter;
+    ViewPager tabsPager;
+    static final int NUM_ITEMS = 10;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +101,29 @@ public class MainActivity extends AppCompatActivity {
         menuRecyclerView.setLayoutManager(menuLayoutManager);
 
         // End set up basic menu -------------------------------------------------
+
+        //Set up tabs ------------------------------------------------------------
+
+        tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS);
+
+        tabsPager = (ViewPager)findViewById(R.id.pager);
+        tabsPager.setAdapter(tabsAdapter);
+
+        // Watch for button clicks.
+        Button button = (Button)findViewById(R.id.goto_first);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                tabsPager.setCurrentItem(0);
+            }
+        });
+        button = (Button)findViewById(R.id.goto_last);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                tabsPager.setCurrentItem(NUM_ITEMS-1);
+            }
+        });
+
+        //End set up tabs --------------------------------------------------------
 
         // Read rss feed ---------------------------------------------------------
         Calendar cal = Calendar.getInstance();
