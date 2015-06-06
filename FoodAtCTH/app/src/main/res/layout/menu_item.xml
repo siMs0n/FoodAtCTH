@@ -26,7 +26,7 @@
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:text="Medium text"
         android:layout_toLeftOf="@+id/menuItemImage"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="22dp"
         android:id="@+id/menuItemTitle"/>
 
     <TextView
@@ -35,7 +35,7 @@
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
         android:textSize="14sp"
         android:text="Medium text"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="22dp"
         android:layout_toLeftOf="@+id/menuItemImage"
         android:layout_below="@+id/menuItemTitle"
         android:id="@+id/menuItemDescription"/>

@@ -22,6 +22,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
     private static final int LIST_ITEM = 0;
     private static final int LIST_TITLE = 1;
+    private static final int LIST_HEADER = 2;
 
     public MenuAdapter() {
         rssItems = new ArrayList<>();
@@ -41,7 +42,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                 title = (TextView) itemView.findViewById(R.id.menuItemTitle);
                 description = (TextView) itemView.findViewById(R.id.menuItemDescription);
                 image = (ImageView) itemView.findViewById(R.id.menuItemImage);
-            }else if(viewType == LIST_TITLE){
+            }else if(viewType == LIST_TITLE || viewType == LIST_HEADER){
                 title = (TextView) itemView.findViewById(R.id.menuTitle);
             }
         }
@@ -59,6 +60,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         View v;
         if(viewType == LIST_ITEM) {
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.menu_item, parent, false); //Inflating the layout
+        }else if(viewType == LIST_HEADER){
+            v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_header, parent, false); //Inflating the layout
         }else{
             v = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_title, parent, false); //Inflating the layout
         }
@@ -115,6 +118,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+        if(position==0)
+            return LIST_HEADER;
+
         if (titleNames.contains(rssItems.get(position).getTitle()))
             return LIST_TITLE;
 

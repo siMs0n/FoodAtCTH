@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         menuRecyclerView.setAdapter(menuAdapter);
         menuLayoutManager = new LinearLayoutManager(this);
         //New version
-        menuRecyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
+        //menuRecyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
         menuRecyclerView.setLayoutManager(menuLayoutManager);
 
