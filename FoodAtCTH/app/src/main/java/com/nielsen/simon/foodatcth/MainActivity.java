@@ -9,18 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView.Adapter drawerAdapter, menuAdapter;
     RecyclerView.LayoutManager drawerLayoutManager, menuLayoutManager;
     DrawerLayout drawer;
+    SimpleAdapter mAdapter;
 
     ActionBarDrawerToggle mDrawerToggle;
 
@@ -89,12 +87,14 @@ public class MainActivity extends AppCompatActivity {
 
         menuRecyclerView = (RecyclerView) findViewById(R.id.MenuRecyclerView);
         menuRecyclerView.setHasFixedSize(true);
-        menuAdapter = new MenuAdapter(new ArrayList<RssItem>());
+        menuAdapter = new MenuAdapter();
 
         menuRecyclerView.setAdapter(menuAdapter);
         menuLayoutManager = new LinearLayoutManager(this);
+        //New version
+        menuRecyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
+
         menuRecyclerView.setLayoutManager(menuLayoutManager);
-        Log.v("myApp",menuLayoutManager.toString());
 
         // End set up basic menu -------------------------------------------------
 
@@ -102,10 +102,11 @@ public class MainActivity extends AppCompatActivity {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.DAY_OF_WEEK, 2);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        RssTask rssTask = new RssTask(this);
+        SimpleDateFormat sdf2 = new SimpleDateFormat("EEEE");
         for(int i = 0; i < 5; i++){
             String date = sdf.format(cal.getTime());
-            new RssTask(this).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+date+".rss");
+            String day = sdf2.format(cal.getTime());
+            new RssTask(this, day).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+date+".rss");
             cal.add(Calendar.DAY_OF_WEEK, 1);
         }
         //String TODAY = sdf.format(new Date());
@@ -116,8 +117,10 @@ public class MainActivity extends AppCompatActivity {
 
     private class RssTask extends AsyncTask<String, Void, List<RssItem>> {
         private Activity activity;
-        public RssTask(Activity a){
+        private String day;
+        public RssTask(Activity a, String day){
             activity = a;
+            this.day = day;
         }
 
         @Override
@@ -146,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<RssItem> rssItems) {
             super.onPostExecute(rssItems);
-            loadFoodMenu(rssItems);
+            loadFoodMenu(rssItems, day);
             dismissLoadingAnimation();
         }
     }
@@ -181,8 +184,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void loadFoodMenu(List<RssItem> rssItems){
-        ((MenuAdapter)menuAdapter).updateRssList(rssItems);
+    private void loadFoodMenu(List<RssItem> rssItems, String day){
+        ((MenuAdapter)menuAdapter).updateRssList(rssItems, day);
         menuAdapter.notifyDataSetChanged();
     }
 }
