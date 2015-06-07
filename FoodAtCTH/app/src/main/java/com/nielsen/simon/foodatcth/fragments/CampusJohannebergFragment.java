@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.nielsen.simon.foodatcth.MenuAdapter;
@@ -28,7 +29,9 @@ import java.util.List;
 public class CampusJohannebergFragment extends Fragment {
 
     private int page;
+    private int progressBarShowing=0;
     private boolean hasDisplayedErrorMsg;
+    private ProgressBar progressBar;
 
     RecyclerView menuRecyclerView;
     RecyclerView.Adapter menuAdapter;
@@ -97,6 +100,10 @@ public class CampusJohannebergFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_campus_johanneberg, container, false);
         Log.v("myApp","Inflate fragment");
+
+        progressBar = (ProgressBar)v.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+
         //Set up basic menu ------------------------------------------------------
 
         menuRecyclerView = (RecyclerView) v.findViewById(R.id.MenuRecyclerView);
@@ -109,7 +116,6 @@ public class CampusJohannebergFragment extends Fragment {
         //menuRecyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
 
         menuRecyclerView.setLayoutManager(menuLayoutManager);
-
         // End set up basic menu -------------------------------------------------
         // Read rss feed ---------------------------------------------------------
         if(!((MenuAdapter)menuAdapter).hasBeenReset()) {
@@ -128,7 +134,6 @@ public class CampusJohannebergFragment extends Fragment {
 
 
         // end read rss feed -----------------------------------------------------
-
         return v;
     }
 
@@ -162,18 +167,26 @@ public class CampusJohannebergFragment extends Fragment {
         @Override
         protected void onPostExecute(List<RssItem> rssItems) {
             super.onPostExecute(rssItems);
-            Log.v("myApp","Executed");
+            Log.v("myApp", "Executed");
             loadFoodMenu(rssItems, day);
             dismissLoadingAnimation();
         }
     }
 
     private void startLoadingAnimation(){
-
+        if(progressBarShowing==0) {
+            progressBar.setVisibility(View.VISIBLE);
+            menuRecyclerView.setVisibility(View.GONE);
+        }
+        progressBarShowing++;
     }
 
     private void dismissLoadingAnimation(){
-
+        progressBarShowing--;
+        if(progressBarShowing==0) {
+            menuRecyclerView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        }
     }
 
     private void loadFoodMenu(List<RssItem> rssItems, String day){
