@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import java.util.List;
 public class CampusJohannebergFragment extends Fragment {
 
     private int page;
+    private boolean hasDisplayedErrorMsg;
 
     RecyclerView menuRecyclerView;
     RecyclerView.Adapter menuAdapter;
@@ -66,8 +68,10 @@ public class CampusJohannebergFragment extends Fragment {
                     rssItems.add(new RssItem(titles[i],descriptions[i]));
                 }
                 ((MenuAdapter)menuAdapter).setRssItems(rssItems);
+                Log.v("myApp", "Loaded tab ");
             }
         }
+        Log.v("myApp", "Creating tab " + page);
 
     }
 
@@ -82,7 +86,10 @@ public class CampusJohannebergFragment extends Fragment {
         }
         savedState.putStringArray("titles", titles);
         savedState.putStringArray("descriptions", descriptions);
+        Log.v("myApp", "Saved tab ");
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -105,15 +112,17 @@ public class CampusJohannebergFragment extends Fragment {
 
         // End set up basic menu -------------------------------------------------
         // Read rss feed ---------------------------------------------------------
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, 2);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("EEEE");
-        for(int i = 0; i < 5; i++){
-            String date = sdf.format(cal.getTime());
-            String day = sdf2.format(cal.getTime());
-            new RssTask(getActivity(), day).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+date+".rss");
-            cal.add(Calendar.DAY_OF_WEEK, 1);
+        if(!((MenuAdapter)menuAdapter).hasBeenReset()) {
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.DAY_OF_WEEK, 2);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sdf2 = new SimpleDateFormat("EEEE");
+            for (int i = 0; i < 5; i++) {
+                String date = sdf.format(cal.getTime());
+                String day = sdf2.format(cal.getTime());
+                new RssTask(getActivity(), day).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/" + date + ".rss");
+                cal.add(Calendar.DAY_OF_WEEK, 1);
+            }
         }
         //String TODAY = sdf.format(new Date());
 
@@ -144,11 +153,7 @@ public class CampusJohannebergFragment extends Fragment {
                 RssReader rssReader = new RssReader(urls[0]);
                 return rssReader.readRss();
             }catch (IOException e){
-                activity.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(activity, activity.getResources().getString(R.string.menu_error), Toast.LENGTH_SHORT).show();
-                    }
-                });
+
             }
 
             return null;
@@ -172,9 +177,14 @@ public class CampusJohannebergFragment extends Fragment {
     }
 
     private void loadFoodMenu(List<RssItem> rssItems, String day){
-        Log.v("myApp",day+rssItems.size());
-        ((MenuAdapter)menuAdapter).updateRssList(rssItems, day);
-        menuAdapter.notifyDataSetChanged();
+        if(rssItems!=null) {
+            Log.v("myApp", day + rssItems.size());
+            ((MenuAdapter) menuAdapter).updateRssList(rssItems, day);
+            menuAdapter.notifyDataSetChanged();
+        }else if(rssItems==null && !hasDisplayedErrorMsg){
+            Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.menu_error), Toast.LENGTH_SHORT).show();
+            hasDisplayedErrorMsg = true;
+        }
     }
 
 }

@@ -5,11 +5,6 @@
     android:orientation="vertical"
     tools:context="com.nielsen.simon.foodatcth.fragments.CampusJohannebergFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hej" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/MenuRecyclerView"
         android:layout_width="match_parent"

@@ -20,6 +20,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     private ArrayList<Integer> titlePositions;
     private ArrayList<String> titleNames;
 
+    private boolean reseted;
+
     private static final int LIST_ITEM = 0;
     private static final int LIST_TITLE = 1;
     private static final int LIST_HEADER = 2;
@@ -53,14 +55,20 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         titleNames.add(day);
         this.rssItems.add(new RssItem(day, ""));
         this.rssItems.addAll(rssItems);
+        reseted = true;
     }
 
     public void setRssItems(List<RssItem> items){
         rssItems = items;
+        reseted = true;
     }
 
     public List<RssItem> getRssItems(){
         return rssItems;
+    }
+
+    public boolean hasBeenReset(){
+        return reseted;
     }
 
     @Override
