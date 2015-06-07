@@ -1,6 +1,8 @@
 package com.nielsen.simon.foodatcth;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(tabsPager);
-        //tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setBackgroundColor(getResources().getColor(R.color.primaryColor));
         tabsPager.setCurrentItem(1);
 
         //End set up tabs --------------------------------------------------------

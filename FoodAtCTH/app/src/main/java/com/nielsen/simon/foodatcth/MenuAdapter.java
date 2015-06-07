@@ -53,7 +53,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     public void updateRssList(List<RssItem> rssItems, String day) {
         titlePositions.add(rssItems.size());
         titleNames.add(day);
-        this.rssItems.add(new RssItem(day, ""));
+        String capDay = day.substring(0,1).toUpperCase()+day.substring(1);
+        this.rssItems.add(new RssItem(capDay, ""));
         this.rssItems.addAll(rssItems);
         reseted = true;
     }

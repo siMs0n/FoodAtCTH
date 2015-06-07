@@ -126,7 +126,7 @@ public class CampusJohannebergFragment extends Fragment {
             for (int i = 0; i < 5; i++) {
                 String date = sdf.format(cal.getTime());
                 String day = sdf2.format(cal.getTime());
-                new RssTask(getActivity(), day).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/" + date + ".rss");
+                new RssTask(day).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/" + date + ".rss");
                 cal.add(Calendar.DAY_OF_WEEK, 1);
             }
         }
@@ -138,10 +138,8 @@ public class CampusJohannebergFragment extends Fragment {
     }
 
     private class RssTask extends AsyncTask<String, Void, List<RssItem>> {
-        private Activity activity;
         private String day;
-        public RssTask(Activity a, String day){
-            activity = a;
+        public RssTask(String day){
             this.day = day;
         }
 
