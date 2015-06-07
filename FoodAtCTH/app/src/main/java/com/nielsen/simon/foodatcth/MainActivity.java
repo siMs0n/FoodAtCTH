@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Set up tabs ------------------------------------------------------------
 
-        String[] tabTitles = {"Linsen", "Kår\nrestaurangen", "Hyllan"};
+        String[] tabTitles = {"    Linsen    ", "Kårrestaurangen", "    Hyllan    "};
         tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS, tabTitles);
 
         tabsPager = (ViewPager)findViewById(R.id.viewpager);
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(tabsPager);
-        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        //tabLayout.setTabMode(TabLayout.MODE_FIXED);
         tabsPager.setCurrentItem(1);
 
         //End set up tabs --------------------------------------------------------
