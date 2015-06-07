@@ -136,9 +136,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(0));
+        /**getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(0));
         getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(1));
-        getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(2));
+        getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(2));*/
     }
 
     private class RssTask extends AsyncTask<String, Void, List<RssItem>> {
