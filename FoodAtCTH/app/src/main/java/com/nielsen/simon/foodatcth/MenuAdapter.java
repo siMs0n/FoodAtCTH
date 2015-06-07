@@ -17,7 +17,6 @@ import java.util.List;
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
     private List<RssItem> rssItems;
-    private ArrayList<Integer> titlePositions;
     private ArrayList<String> titleNames;
 
     private boolean reseted;
@@ -28,7 +27,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
     public MenuAdapter() {
         rssItems = new ArrayList<>();
-        titlePositions = new ArrayList<>();
         titleNames = new ArrayList<>();
     }
 
@@ -50,11 +48,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         }
     }
 
-    public void updateRssList(List<RssItem> rssItems, String day) {
-        titlePositions.add(rssItems.size());
-        titleNames.add(day);
-        String capDay = day.substring(0,1).toUpperCase()+day.substring(1);
-        this.rssItems.add(new RssItem(capDay, ""));
+    public void updateRssList(List<RssItem> rssItems) {
         this.rssItems.addAll(rssItems);
         reseted = true;
     }
@@ -70,6 +64,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
     public boolean hasBeenReset(){
         return reseted;
+    }
+
+    public void setTitleNames(String[] titles){
+        for(int i = 0; i<titles.length; i++){
+            titleNames.add(titles[i]);
+        }
     }
 
     @Override

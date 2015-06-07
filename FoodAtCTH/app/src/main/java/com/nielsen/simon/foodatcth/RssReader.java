@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,21 +16,26 @@ import java.util.List;
  */
 public class RssReader {
 
-    private String rssUrl;
+    private String[] rssUrls, days;
     private List<RssItem> rssItems;
 
-    public RssReader(String rssUrl){
-        this.rssUrl = rssUrl;
+    public RssReader(String[] rssUrls, String days[]) {
+        this.rssUrls = rssUrls;
+        this.days = days;
+        rssItems = new ArrayList<>();
     }
 
-    public List<RssItem> readRss() throws IOException{
+    public List<RssItem> readRss() throws IOException {
         try {
-            InputStream inputStream = downloadUrl(rssUrl);
             RssParser rssParser = new RssParser();
-            rssItems = rssParser.parse(inputStream);
-        }catch (IOException ioException){
+            for (int i = 0; i < rssUrls.length; i++) {
+                this.rssItems.add(new RssItem(days[i], ""));
+                InputStream inputStream = downloadUrl(rssUrls[i]);
+                rssItems.addAll(rssParser.parse(inputStream));
+            }
+        } catch (IOException ioException) {
             throw new IOException();
-        }catch (XmlPullParserException e){
+        } catch (XmlPullParserException e) {
             throw new IOException();
         }
         return rssItems;

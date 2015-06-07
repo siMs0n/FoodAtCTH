@@ -78,6 +78,30 @@ public class CampusJohannebergFragment extends Fragment {
 
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.v("myApp", "Stop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.v("myApp", "Destroy View");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.v("myApp", "Destroy");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.v("myApp", "Pause");
+    }
+
     public void onSaveInstanceState(Bundle savedState){
         super.onSaveInstanceState(savedState);
        List<RssItem> rssItems = ((MenuAdapter)menuAdapter).getRssItems();
@@ -123,13 +147,20 @@ public class CampusJohannebergFragment extends Fragment {
             cal.set(Calendar.DAY_OF_WEEK, 2);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat sdf2 = new SimpleDateFormat("EEEE");
+            String[] urls = new String[5];
+            String[] days = new String[5];
             for (int i = 0; i < 5; i++) {
                 String date = sdf.format(cal.getTime());
                 String day = sdf2.format(cal.getTime());
-                new RssTask(day).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/" + date + ".rss");
+                urls[i] = "http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/" + date + ".rss";
+                String capDay = day.substring(0,1).toUpperCase()+day.substring(1);
+                days[i] = capDay;
                 cal.add(Calendar.DAY_OF_WEEK, 1);
             }
+            ((MenuAdapter) menuAdapter).setTitleNames(days);
+            new RssTask(days).execute(urls);
         }
+
         //String TODAY = sdf.format(new Date());
 
 
@@ -138,9 +169,9 @@ public class CampusJohannebergFragment extends Fragment {
     }
 
     private class RssTask extends AsyncTask<String, Void, List<RssItem>> {
-        private String day;
-        public RssTask(String day){
-            this.day = day;
+        private String[] days;
+        public RssTask(String[] days){
+            this.days = days;
         }
 
         @Override
@@ -150,10 +181,11 @@ public class CampusJohannebergFragment extends Fragment {
         }
 
         @Override
-        protected List<RssItem> doInBackground(String... urls) {
+        protected List<RssItem> doInBackground(String[] urls) {
 
             try{
-                RssReader rssReader = new RssReader(urls[0]);
+                RssReader rssReader = new RssReader(urls, days);
+                Log.v("myApp","Reading rss from doInBackground");
                 return rssReader.readRss();
             }catch (IOException e){
 
@@ -166,7 +198,7 @@ public class CampusJohannebergFragment extends Fragment {
         protected void onPostExecute(List<RssItem> rssItems) {
             super.onPostExecute(rssItems);
             Log.v("myApp", "Executed");
-            loadFoodMenu(rssItems, day);
+            loadFoodMenu(rssItems);
             dismissLoadingAnimation();
         }
     }
@@ -187,10 +219,10 @@ public class CampusJohannebergFragment extends Fragment {
         }
     }
 
-    private void loadFoodMenu(List<RssItem> rssItems, String day){
+    private void loadFoodMenu(List<RssItem> rssItems){
         if(rssItems!=null) {
-            Log.v("myApp", day + rssItems.size());
-            ((MenuAdapter) menuAdapter).updateRssList(rssItems, day);
+            //Log.v("myApp", day + rssItems.size());
+            ((MenuAdapter) menuAdapter).updateRssList(rssItems);
             menuAdapter.notifyDataSetChanged();
         }else if(rssItems==null && !hasDisplayedErrorMsg){
             Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.menu_error), Toast.LENGTH_SHORT).show();

@@ -90,21 +90,6 @@ public class MainActivity extends AppCompatActivity {
         mDrawerToggle.syncState();
         // End Navigation Drawer -------------------------------------------------
 
-        //Set up basic menu ------------------------------------------------------
-        /**
-        menuRecyclerView = (RecyclerView) findViewById(R.id.MenuRecyclerView);
-        menuRecyclerView.setHasFixedSize(true);
-        menuAdapter = new MenuAdapter();
-
-        menuRecyclerView.setAdapter(menuAdapter);
-        menuLayoutManager = new LinearLayoutManager(this);
-        //New version
-        //menuRecyclerView.addItemDecoration(new DividerItemDecoration(this,LinearLayoutManager.VERTICAL));
-
-        menuRecyclerView.setLayoutManager(menuLayoutManager);*/
-
-        // End set up basic menu -------------------------------------------------
-
         //Set up tabs ------------------------------------------------------------
 
         String[] tabTitles = {"    Linsen    ", "Kårrestaurangen", "    Hyllan    "};
@@ -120,22 +105,6 @@ public class MainActivity extends AppCompatActivity {
         tabsPager.setCurrentItem(1);
 
         //End set up tabs --------------------------------------------------------
-
-        // Read rss feed ---------------------------------------------------------
-        /*Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, 2);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("EEEE");
-        for(int i = 0; i < 5; i++){
-            String date = sdf.format(cal.getTime());
-            String day = sdf2.format(cal.getTime());
-            new RssTask(this, day).execute("http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/"+date+".rss");
-            cal.add(Calendar.DAY_OF_WEEK, 1);
-        }*/
-        //String TODAY = sdf.format(new Date());
-
-
-        // end read rss feed -----------------------------------------------------
     }
 
     @Override
@@ -144,45 +113,6 @@ public class MainActivity extends AppCompatActivity {
         /**getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(0));
         getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(1));
         getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(2));*/
-    }
-
-    private class RssTask extends AsyncTask<String, Void, List<RssItem>> {
-        private Activity activity;
-        private String day;
-        public RssTask(Activity a, String day){
-            activity = a;
-            this.day = day;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            startLoadingAnimation();
-        }
-
-        @Override
-        protected List<RssItem> doInBackground(String... urls) {
-
-            try{
-                RssReader rssReader = new RssReader(urls[0]);
-                return rssReader.readRss();
-            }catch (IOException e){
-                activity.runOnUiThread(new Runnable() {
-                    public void run() {
-                        Toast.makeText(activity, activity.getResources().getString(R.string.menu_error), Toast.LENGTH_SHORT);
-                    }
-                });
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<RssItem> rssItems) {
-            super.onPostExecute(rssItems);
-            loadFoodMenu(rssItems, day);
-            dismissLoadingAnimation();
-        }
     }
 
     @Override
@@ -207,16 +137,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void startLoadingAnimation(){
-
-    }
-
-    private void dismissLoadingAnimation(){
-
-    }
-
-    private void loadFoodMenu(List<RssItem> rssItems, String day){
-        ((MenuAdapter)menuAdapter).updateRssList(rssItems, day);
-        menuAdapter.notifyDataSetChanged();
-    }
 }

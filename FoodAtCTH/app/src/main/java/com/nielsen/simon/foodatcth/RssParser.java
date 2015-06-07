@@ -34,6 +34,7 @@ public class RssParser {
     }
 
     private List<RssItem> readFeed(XmlPullParser parser) throws IOException, XmlPullParserException {
+        rssItems.clear();
         parser.require(XmlPullParser.START_TAG, ns, "channel");
         while(parser.next()!= XmlPullParser.END_TAG) {
             if(parser.getEventType() != XmlPullParser.START_TAG){
