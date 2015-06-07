@@ -105,15 +105,17 @@ public class MainActivity extends AppCompatActivity {
 
         //Set up tabs ------------------------------------------------------------
 
-        String[] tabTitles = {"Linsen", "Kårrestaurangen", "Hyllan"};
+        String[] tabTitles = {"Linsen", "Kår\nrestaurangen", "Hyllan"};
         tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS, tabTitles);
 
         tabsPager = (ViewPager)findViewById(R.id.viewpager);
         tabsPager.setAdapter(tabsAdapter);
 
+
         TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(tabsPager);
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabsPager.setCurrentItem(1);
 
         //End set up tabs --------------------------------------------------------
 
