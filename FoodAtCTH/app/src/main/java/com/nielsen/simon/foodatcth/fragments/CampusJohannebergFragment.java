@@ -152,7 +152,7 @@ public class CampusJohannebergFragment extends Fragment {
             for (int i = 0; i < 5; i++) {
                 String date = sdf.format(cal.getTime());
                 String day = sdf2.format(cal.getTime());
-                urls[i] = "http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/" + date + ".rss";
+                urls[i] = getResources().getString(R.string.student_union_restaurant_link) + date + ".rss";
                 String capDay = day.substring(0,1).toUpperCase()+day.substring(1);
                 days[i] = capDay;
                 cal.add(Calendar.DAY_OF_WEEK, 1);

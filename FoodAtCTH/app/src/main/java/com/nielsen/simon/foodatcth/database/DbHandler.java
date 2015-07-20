@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.nielsen.simon.foodatcth.Message;
+import com.nielsen.simon.foodatcth.Pizza;
 import com.nielsen.simon.foodatcth.R;
 
 import java.io.FileOutputStream;
@@ -28,28 +29,44 @@ public class DbHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "menusDB.db";
-    public static final String TABLE_SANNE = "sanne";
+    public static final String TABLE_SANNE_GIBRALTAR = "Sanne_Gibraltar";
     public static final String TABLE_FAIJTAS = "faijtas";
 
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_PRODUCTNAME = "productname";
     public static final String COLUMN_PRODUCTDESCRIPTION = "productdescription";
     public static final String COLUMN_PRICE = "price";
+
+    public static final String SANNE_GIB_COLUMN_ID = "_id";
+    public static final String SANNE_GIB_COLUMN_NAME = "productname";
+    public static final String SANNE_GIB_COLUMN_INGREDIENTS = "productdescription";
+    public static final String SANNE_GIB_COLUMN_PRICE = "price";
+
     public static final String CREATE_SANNE_TABLE = "CREATE TABLE " +
-            TABLE_SANNE + "("
+            TABLE_SANNE_GIBRALTAR + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY," + COLUMN_PRODUCTNAME
             + " TEXT," + COLUMN_PRODUCTDESCRIPTION
             + " TEXT," + COLUMN_PRICE + " INTEGER" + ")";
 
     private Context context;
-    public Map<Menu, String> tables;
+    public Map<Menu, String> menuTables;
+    public Map<PizzaMenu, String> pizzaTables;
 
     public static enum Menu {
-        SANNE, FAIJTAS
+        FAIJTAS
+    }
+
+    public static enum PizzaMenu {
+        SANNE_GIBRALTAR
     }
 
     public DbHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+        this.context = context;
+    }
+
+    public DbHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
 
@@ -60,8 +77,8 @@ public class DbHandler extends SQLiteOpenHelper {
         } catch (IOException e) {
             Message.simpleMessage(context, context.getResources().getString(R.string.menu_error));
         }
-        tables.put(Menu.SANNE, TABLE_SANNE);
-        tables.put(Menu.FAIJTAS, TABLE_FAIJTAS);
+        pizzaTables.put(PizzaMenu.SANNE_GIBRALTAR, TABLE_SANNE_GIBRALTAR);
+        menuTables.put(Menu.FAIJTAS, TABLE_FAIJTAS);
     }
 
     @Override
@@ -159,7 +176,7 @@ public class DbHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        long id = db.insert(tables.get(menu), null, values);
+        long id = db.insert(menuTables.get(menu), null, values);
         if (id < 0) {
             db.close();
             return false;
@@ -181,7 +198,7 @@ public class DbHandler extends SQLiteOpenHelper {
         String sortOrder = COLUMN_ID + " DESC";
 
         ArrayList<Product> products = new ArrayList<Product>();
-        Cursor c = this.getReadableDatabase().query(tables.get(menu), projection, null, null, null, null, sortOrder);
+        Cursor c = this.getReadableDatabase().query(menuTables.get(menu), projection, null, null, null, null, sortOrder);
 
         if (c.moveToFirst()) {
             while (!c.isAfterLast()) {
@@ -190,6 +207,29 @@ public class DbHandler extends SQLiteOpenHelper {
             }
         }
         return products;
+    }
+
+    public ArrayList<Pizza> getPizzaMenu(PizzaMenu menu) {
+
+        String[] projection = {
+                COLUMN_ID,
+                COLUMN_PRODUCTNAME,
+                COLUMN_PRODUCTDESCRIPTION,
+                COLUMN_PRICE
+        };
+
+        String sortOrder = COLUMN_ID + " DESC";
+
+        ArrayList<Pizza> pizzas = new ArrayList<Pizza>();
+        Cursor c = this.getReadableDatabase().query(pizzaTables.get(menu), projection, null, null, null, null, sortOrder);
+
+        if (c.moveToFirst()) {
+            while (!c.isAfterLast()) {
+                pizzas.add(new Pizza()); //TODO: Get correct values from db
+                c.moveToNext();
+            }
+        }
+        return pizzas;
     }
 
 }
