@@ -1,11 +1,15 @@
 package com.nielsen.simon.foodatcth;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -13,10 +17,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -29,11 +37,11 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     //Variables for Navigation Drawer ------------------------------------
-    private String titles[] = {"Campus Johanneberg","Campus Lindholmen","Sannegården","Inställningar","Hjälp och feedback"};
-    private int icons[] = {R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher,R.mipmap.ic_launcher};
+    private String titles[] = {"Campus Johanneberg", "Campus Lindholmen", "Sannegården", "Inställningar", "Hjälp och feedback"};
+    private int icons[] = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
 
     RecyclerView drawerRecyclerView, menuRecyclerView;
-    RecyclerView.Adapter drawerAdapter, menuAdapter;
+    DrawerAdapter drawerAdapter, menuAdapter;
     RecyclerView.LayoutManager drawerLayoutManager, menuLayoutManager;
     DrawerLayout drawer;
 
@@ -64,13 +72,14 @@ public class MainActivity extends AppCompatActivity {
         drawerRecyclerView = (RecyclerView) findViewById(R.id.DrawerRecyclerView);
         drawerRecyclerView.setHasFixedSize(true);
         drawerAdapter = new DrawerAdapter(titles, icons, appName, tagLine, appIcon);
+        drawerAdapter.setClickListener(new DrawerClickListener());
 
         drawerRecyclerView.setAdapter(drawerAdapter);
         drawerLayoutManager = new LinearLayoutManager(this);
         drawerRecyclerView.setLayoutManager(drawerLayoutManager);
 
         drawer = (DrawerLayout) findViewById(R.id.drawerlayout);
-        mDrawerToggle = new ActionBarDrawerToggle(this,drawer,toolbar, R.string.navigation_drawer_open,R.string.navigation_drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -95,11 +104,11 @@ public class MainActivity extends AppCompatActivity {
         String[] tabTitles = {"    Linsen    ", "Kårrestaurangen", "    Hyllan    "};
         tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS, tabTitles);
 
-        tabsPager = (ViewPager)findViewById(R.id.viewpager);
+        tabsPager = (ViewPager) findViewById(R.id.viewpager);
         tabsPager.setAdapter(tabsAdapter);
 
 
-        TabLayout tabLayout = (TabLayout)findViewById(R.id.sliding_tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(tabsPager);
         tabLayout.setBackgroundColor(getResources().getColor(R.color.primaryColor));
         tabsPager.setCurrentItem(1);
@@ -107,12 +116,33 @@ public class MainActivity extends AppCompatActivity {
         //End set up tabs --------------------------------------------------------
     }
 
+    private class DrawerClickListener implements DrawerAdapter.ClickListener{
+        @Override
+        public void onClick(View v, int itemID) {
+            selectItem(itemID);
+        }
+    }
+    /**
+     * Swaps fragments in the main content view
+     */
+    private void selectItem(int itemID) {
+
+        if(itemID==R.id.item_row){
+
+        }
+
+        Intent a = new Intent(MainActivity.this, SannegardenGibraltar.class);
+        startActivity(a);
+
+        drawer.closeDrawer(GravityCompat.START);
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         /**getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(0));
-        getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(1));
-        getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(2));*/
+         getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(1));
+         getSupportFragmentManager().putFragment(savedInstanceState, "mContent", tabsAdapter.getItem(2));*/
     }
 
     @Override

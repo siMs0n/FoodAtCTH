@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.annotation.NonNull;
 
 import com.nielsen.simon.foodatcth.Message;
 import com.nielsen.simon.foodatcth.Pizza;
@@ -17,7 +18,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Simon on 2015-07-20.
@@ -25,11 +29,11 @@ import java.util.Map;
 public class DbHandler extends SQLiteOpenHelper {
 
     //The Android's default system path of your application database.
-    private static String DB_PATH = "/data/data/YOUR_PACKAGE/databases/";
+    private static String DB_PATH = "/data/data/com/nielsen/simon/foodatcth/databases/";
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "menusDB.db";
-    public static final String TABLE_SANNE_GIBRALTAR = "Sanne_Gibraltar";
+    private static final String DATABASE_NAME = "menus.db";
+    public static final String TABLE_SANNE_GIBRALTAR = "Sanne_Gibraltar_Menu";
     public static final String TABLE_FAIJTAS = "faijtas";
 
     public static final String COLUMN_ID = "_id";
@@ -37,10 +41,11 @@ public class DbHandler extends SQLiteOpenHelper {
     public static final String COLUMN_PRODUCTDESCRIPTION = "productdescription";
     public static final String COLUMN_PRICE = "price";
 
-    public static final String SANNE_GIB_COLUMN_ID = "_id";
-    public static final String SANNE_GIB_COLUMN_NAME = "productname";
-    public static final String SANNE_GIB_COLUMN_INGREDIENTS = "productdescription";
+    public static final String SANNE_GIB_COLUMN_MENU_NR = "menu_nr";
+    public static final String SANNE_GIB_COLUMN_NAME = "name";
+    public static final String SANNE_GIB_COLUMN_INGREDIENTS = "ingredients";
     public static final String SANNE_GIB_COLUMN_PRICE = "price";
+    public static final String SANNE_GIB_COLUMN_GROUP_ID = "group_id";
 
     public static final String CREATE_SANNE_TABLE = "CREATE TABLE " +
             TABLE_SANNE_GIBRALTAR + "("
@@ -63,35 +68,46 @@ public class DbHandler extends SQLiteOpenHelper {
     public DbHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
         this.context = context;
-    }
-
-    public DbHandler(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
+        pizzaTables = new HashMap<PizzaMenu, String>();
+        menuTables = new HashMap<Menu, String>();
+        pizzaTables.put(PizzaMenu.SANNE_GIBRALTAR, TABLE_SANNE_GIBRALTAR);
+        menuTables.put(Menu.FAIJTAS, TABLE_FAIJTAS);
         try {
             createDataBase();
         } catch (IOException e) {
             Message.simpleMessage(context, context.getResources().getString(R.string.menu_error));
         }
-        pizzaTables.put(PizzaMenu.SANNE_GIBRALTAR, TABLE_SANNE_GIBRALTAR);
-        menuTables.put(Menu.FAIJTAS, TABLE_FAIJTAS);
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public DbHandler(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+        pizzaTables = new HashMap<PizzaMenu, String>();
+        menuTables = new HashMap<Menu, String>();
+        pizzaTables.put(PizzaMenu.SANNE_GIBRALTAR, TABLE_SANNE_GIBRALTAR);
+        menuTables.put(Menu.FAIJTAS, TABLE_FAIJTAS);
         try {
-            context.deleteDatabase(DATABASE_NAME);
-            onCreate(null);
-        } catch (SQLException e) {
+            createDataBase();
+        } catch (IOException e) {
             Message.simpleMessage(context, context.getResources().getString(R.string.menu_error));
         }
     }
 
-    private void createDataBase() throws IOException {
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        /*try {
+            context.deleteDatabase(DATABASE_NAME);
+            onCreate(null);
+        } catch (SQLException e) {
+            Message.simpleMessage(context, context.getResources().getString(R.string.menu_error));
+        }*/
+    }
+
+    public void createDataBase() throws IOException {
 
         boolean dbExist = checkDataBase();
 
@@ -106,8 +122,8 @@ public class DbHandler extends SQLiteOpenHelper {
                 copyDataBase();
 
             } catch (IOException e) {
-
-                Message.simpleMessage(context, context.getResources().getString(R.string.menu_error));
+                e.printStackTrace();
+                Message.simpleMessage(context, context.getResources().getString(R.string.database_error));
 
             }
         }
@@ -124,17 +140,19 @@ public class DbHandler extends SQLiteOpenHelper {
         SQLiteDatabase checkDB = null;
 
         try {
-            String myPath = DB_PATH + DATABASE_NAME;
+            String myPath = context.getDatabasePath(DATABASE_NAME).getPath();
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
         } catch (SQLiteException e) {
             //database does't exist yet.
+            e.printStackTrace();
+            Message.simpleMessage(context, "Database doesn't exist yet");
         }
 
         if (checkDB != null) {
             checkDB.close();
         }
-
-        return checkDB != null ? true : false;
+        return false;
+        //return checkDB != null ? true : false;
     }
 
     /**
@@ -148,7 +166,7 @@ public class DbHandler extends SQLiteOpenHelper {
         InputStream myInput = context.getAssets().open(DATABASE_NAME);
 
         //Path to the just created empty db
-        String outFileName = DB_PATH + DATABASE_NAME;
+        String outFileName = context.getDatabasePath(DATABASE_NAME).getPath();
 
         //Open the empty db as the output stream
         OutputStream myOutput = new FileOutputStream(outFileName);
@@ -198,13 +216,17 @@ public class DbHandler extends SQLiteOpenHelper {
         String sortOrder = COLUMN_ID + " DESC";
 
         ArrayList<Product> products = new ArrayList<Product>();
-        Cursor c = this.getReadableDatabase().query(menuTables.get(menu), projection, null, null, null, null, sortOrder);
-
-        if (c.moveToFirst()) {
-            while (!c.isAfterLast()) {
-                products.add(new Product(c.getInt(c.getColumnIndex(COLUMN_ID)), c.getString(c.getColumnIndex(COLUMN_PRODUCTNAME)), c.getString(c.getColumnIndex(COLUMN_PRODUCTDESCRIPTION)), c.getInt(c.getColumnIndex(COLUMN_PRICE))));
-                c.moveToNext();
+        try {
+            Cursor c = this.getReadableDatabase().query(menuTables.get(menu), projection, null, null, null, null, sortOrder);
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    products.add(new Product(c.getInt(c.getColumnIndex(COLUMN_ID)), c.getString(c.getColumnIndex(COLUMN_PRODUCTNAME)), c.getString(c.getColumnIndex(COLUMN_PRODUCTDESCRIPTION)), c.getInt(c.getColumnIndex(COLUMN_PRICE))));
+                    c.moveToNext();
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Message.simpleMessage(context, context.getResources().getString(R.string.menu_error));
         }
         return products;
     }
@@ -212,22 +234,52 @@ public class DbHandler extends SQLiteOpenHelper {
     public ArrayList<Pizza> getPizzaMenu(PizzaMenu menu) {
 
         String[] projection = {
-                COLUMN_ID,
-                COLUMN_PRODUCTNAME,
-                COLUMN_PRODUCTDESCRIPTION,
-                COLUMN_PRICE
+                SANNE_GIB_COLUMN_MENU_NR,
+                SANNE_GIB_COLUMN_NAME,
+                SANNE_GIB_COLUMN_INGREDIENTS,
+                SANNE_GIB_COLUMN_PRICE,
+                SANNE_GIB_COLUMN_GROUP_ID
         };
 
-        String sortOrder = COLUMN_ID + " DESC";
+        String sortOrder = SANNE_GIB_COLUMN_MENU_NR + " DESC";
 
         ArrayList<Pizza> pizzas = new ArrayList<Pizza>();
-        Cursor c = this.getReadableDatabase().query(pizzaTables.get(menu), projection, null, null, null, null, sortOrder);
-
-        if (c.moveToFirst()) {
-            while (!c.isAfterLast()) {
-                pizzas.add(new Pizza()); //TODO: Get correct values from db
-                c.moveToNext();
+        try {
+            Cursor c = this.getReadableDatabase().query(pizzaTables.get(menu), projection, null, null, null, null, sortOrder);
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    pizzas.add(new Pizza(c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_MENU_NR)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_NAME)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_INGREDIENTS)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_PRICE)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_GROUP_ID)))); //TODO: Get correct values from db
+                    c.moveToNext();
+                }
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Message.simpleMessage(context, context.getResources().getString(R.string.menu_error));
+        }
+        return pizzas;
+    }
+
+    public ArrayList<Pizza> getPizzas(){
+        String[] projection = {
+                "_name",
+                "_ingredients",
+                "_price"
+        };
+
+        String sortOrder = "_id DESC";
+
+        ArrayList<Pizza> pizzas = new ArrayList<Pizza>();
+        try {
+            Cursor c = this.getReadableDatabase().query("Pizza", projection, null, null, null, null, sortOrder);
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    pizzas.add(new Pizza(c.getPosition(), c.getString(c.getColumnIndex("_name")), c.getString(c.getColumnIndex("_ingredients")), c.getInt(c.getColumnIndex("_price")), 0));
+                    c.moveToNext();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Message.simpleMessage(context, context.getResources().getString(R.string.menu_error));
         }
         return pizzas;
     }

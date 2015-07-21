@@ -3,6 +3,7 @@ package com.nielsen.simon.foodatcth;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.nielsen.simon.foodatcth.database.DbHandler;
 
@@ -25,7 +26,11 @@ public class SannegardenGibraltar extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         DbHandler dbHandler = new DbHandler(this);
-        menu = dbHandler.getPizzaMenu(DbHandler.PizzaMenu.SANNE_GIBRALTAR);
+        menu = dbHandler.getPizzas();//dbHandler.getPizzaMenu(DbHandler.PizzaMenu.SANNE_GIBRALTAR);
+        if(menu.size()!= 0 && menu.get(0)!=null)
+            ((TextView)findViewById(R.id.txtView)).setText(menu.get(0).getNr()+menu.get(0).getName()+menu.get(0).getPrice()+" "+menu.get(0).getGroupNr());
+        else
+            Message.simpleMessage(this, "First element doesn't exist");
     }
 
 }
