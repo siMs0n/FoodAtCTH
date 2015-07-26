@@ -33,7 +33,7 @@ public class DbHandler extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "menus.db";
-    public static final String TABLE_SANNE_GIBRALTAR = "Sanne_Gibraltar_Menu";
+    public static final String TABLE_SANNE_GIBRALTAR = "Sanne_Gibraltar_Menu_Complete";
     public static final String TABLE_FAIJTAS = "faijtas";
 
     public static final String COLUMN_ID = "_id";
@@ -82,8 +82,8 @@ public class DbHandler extends SQLiteOpenHelper {
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
-        pizzaTables = new HashMap<PizzaMenu, String>();
-        menuTables = new HashMap<Menu, String>();
+        pizzaTables = new HashMap<>();
+        menuTables = new HashMap<>();
         pizzaTables.put(PizzaMenu.SANNE_GIBRALTAR, TABLE_SANNE_GIBRALTAR);
         menuTables.put(Menu.FAIJTAS, TABLE_FAIJTAS);
         try {
@@ -241,14 +241,14 @@ public class DbHandler extends SQLiteOpenHelper {
                 SANNE_GIB_COLUMN_GROUP_ID
         };
 
-        String sortOrder = SANNE_GIB_COLUMN_MENU_NR + " DESC";
+        String sortOrder = SANNE_GIB_COLUMN_MENU_NR + " ASC";
 
         ArrayList<Pizza> pizzas = new ArrayList<Pizza>();
         try {
             Cursor c = this.getReadableDatabase().query(pizzaTables.get(menu), projection, null, null, null, null, sortOrder);
             if (c.moveToFirst()) {
                 while (!c.isAfterLast()) {
-                    pizzas.add(new Pizza(c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_MENU_NR)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_NAME)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_INGREDIENTS)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_PRICE)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_GROUP_ID)))); //TODO: Get correct values from db
+                    pizzas.add(new Pizza(c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_MENU_NR)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_NAME)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_INGREDIENTS)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_PRICE)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_GROUP_ID))));
                     c.moveToNext();
                 }
             }

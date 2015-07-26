@@ -26,11 +26,11 @@ public class SannegardenGibraltar extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         DbHandler dbHandler = new DbHandler(this);
-        menu = dbHandler.getPizzas();//dbHandler.getPizzaMenu(DbHandler.PizzaMenu.SANNE_GIBRALTAR);
-        if(menu.size()!= 0 && menu.get(0)!=null)
-            ((TextView)findViewById(R.id.txtView)).setText(menu.get(0).getNr()+menu.get(0).getName()+menu.get(0).getPrice()+" "+menu.get(0).getGroupNr());
-        else
-            Message.simpleMessage(this, "First element doesn't exist");
+        menu = dbHandler.getPizzaMenu(DbHandler.PizzaMenu.SANNE_GIBRALTAR);
+        TextView txt = ((TextView)findViewById(R.id.txtView));
+        for(int i = 0; i<menu.size(); i++){
+            txt.setText(txt.getText().toString()+menu.get(i).getNr()+menu.get(i).getName()+menu.get(i).getIngredients()+menu.get(i).getPrice()+" "+menu.get(i).getGroupNr()+"\n");
+        }
     }
 
 }
