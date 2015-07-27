@@ -271,9 +271,12 @@ public class DbHandler extends SQLiteOpenHelper {
 
         String sortOrder = SANNE_GIB_COLUMN_MENU_NR + " ASC";
 
+        String selection = SANNE_GIB_COLUMN_NAME + " LIKE ? OR " + SANNE_GIB_COLUMN_INGREDIENTS + " LIKE ?";
+        String selectionArgs[] = new String[]{"%"+ searchQuery+ "%", "%"+ searchQuery+ "%"};
+
         ArrayList<Pizza> pizzas = new ArrayList<Pizza>();
         try {
-            Cursor c = this.getReadableDatabase().query(pizzaTables.get(menu), projection, searchQuery, null, null, null, sortOrder);
+            Cursor c = this.getReadableDatabase().query(pizzaTables.get(menu), projection, selection, selectionArgs, null, null, sortOrder);
             if (c.moveToFirst()) {
                 while (!c.isAfterLast()) {
                     pizzas.add(new Pizza(c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_MENU_NR)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_NAME)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_INGREDIENTS)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_PRICE)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_GROUP_ID))));

@@ -9,9 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -64,7 +66,7 @@ public class SannegardenGibraltar extends AppCompatActivity {
 
     public void onBackPressed() {
         if(isSearchOpened) {
-            hideKeyboard();
+            closeSearch();
             return;
         }
         super.onBackPressed();
@@ -96,26 +98,19 @@ public class SannegardenGibraltar extends AppCompatActivity {
         ActionBar action = getSupportActionBar(); //get the actionbar
 
         if(isSearchOpened){ //test if the search is open
-            action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
-            action.setDisplayShowTitleEnabled(true); //show the title in the action bar
-
-            //hides the keyboard
-            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
-
-            //add the search icon in the action bar
-            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search));
-
-            menu = dbHandler.getPizzaMenu(DbHandler.PizzaMenu.SANNE_GIBRALTAR);
-            menuAdapter.setMenu(menu);
-
-            isSearchOpened = false;
+            editSearch.setText("");
         } else { //open the search entry
 
             action.setDisplayShowCustomEnabled(true); //enable it to display a
             // custom view in the action bar.
             action.setCustomView(R.layout.search_bar);//add the custom view
             action.setDisplayShowTitleEnabled(false); //hide the title
+            findViewById(R.id.backSearch).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    closeSearch();
+                }
+            });
 
             editSearch = (EditText)action.getCustomView().findViewById(R.id.edtSearch); //the text editor
 
@@ -133,18 +128,17 @@ public class SannegardenGibraltar extends AppCompatActivity {
             editSearch.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
                 }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
                     menu = dbHandler.getPizzaMenuSearchResult(DbHandler.PizzaMenu.SANNE_GIBRALTAR, editSearch.getText().toString());
                     menuAdapter.setMenu(menu);
+                    menuAdapter.notifyDataSetChanged();
                 }
             });
 
@@ -155,8 +149,7 @@ public class SannegardenGibraltar extends AppCompatActivity {
             imm.showSoftInput(editSearch, InputMethodManager.SHOW_IMPLICIT);
 
             //add the close icon
-            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_action));
-
+            mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_clear));
             isSearchOpened = true;
         }
     }
@@ -165,6 +158,27 @@ public class SannegardenGibraltar extends AppCompatActivity {
         //hides the keyboard
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+    }
+
+    private void closeSearch(){
+        Log.v("search", "In close search");
+        ActionBar action = getSupportActionBar(); //get the actionbar
+        action.setDisplayShowCustomEnabled(false); //disable a custom view inside the actionbar
+        action.setDisplayShowTitleEnabled(true); //show the title in the action bar
+
+        //hides the keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+
+        //add the search icon in the action bar
+        mSearchAction.setIcon(getResources().getDrawable(R.drawable.ic_search));
+
+        menu = dbHandler.getPizzaMenu(DbHandler.PizzaMenu.SANNE_GIBRALTAR);
+        menuAdapter.setMenu(menu);
+        menuAdapter.notifyDataSetChanged();
+        Log.v("search", "After close search get db");
+
+        isSearchOpened = false;
     }
 
 }
