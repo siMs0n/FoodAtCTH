@@ -24,6 +24,8 @@
     <string name="sanne_gibraltar">Sannegården Gibraltar</string>
     <string name="faijtas">Miss Faijtas</string>
     <string name="nemos">Kapten Nemos Pizzeria</string>
+    <string name="search">Sök</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="searchHint">T.ex. \"Kebab\"</string>
 </resources>

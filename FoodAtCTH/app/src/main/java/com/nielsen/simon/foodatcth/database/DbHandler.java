@@ -259,6 +259,34 @@ public class DbHandler extends SQLiteOpenHelper {
         return pizzas;
     }
 
+    public ArrayList<Pizza> getPizzaMenuSearchResult(PizzaMenu menu, String searchQuery) {
+
+        String[] projection = {
+                SANNE_GIB_COLUMN_MENU_NR,
+                SANNE_GIB_COLUMN_NAME,
+                SANNE_GIB_COLUMN_INGREDIENTS,
+                SANNE_GIB_COLUMN_PRICE,
+                SANNE_GIB_COLUMN_GROUP_ID
+        };
+
+        String sortOrder = SANNE_GIB_COLUMN_MENU_NR + " ASC";
+
+        ArrayList<Pizza> pizzas = new ArrayList<Pizza>();
+        try {
+            Cursor c = this.getReadableDatabase().query(pizzaTables.get(menu), projection, searchQuery, null, null, null, sortOrder);
+            if (c.moveToFirst()) {
+                while (!c.isAfterLast()) {
+                    pizzas.add(new Pizza(c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_MENU_NR)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_NAME)), c.getString(c.getColumnIndex(SANNE_GIB_COLUMN_INGREDIENTS)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_PRICE)), c.getInt(c.getColumnIndex(SANNE_GIB_COLUMN_GROUP_ID))));
+                    c.moveToNext();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Message.simpleMessage(context, context.getResources().getString(R.string.menu_error));
+        }
+        return pizzas;
+    }
+
     public ArrayList<Pizza> getPizzas(){
         String[] projection = {
                 "_name",
