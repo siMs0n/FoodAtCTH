@@ -1,5 +1,8 @@
 package com.nielsen.simon.foodatcth.fragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.nielsen.simon.foodatcth.dialog.MenuDetailDialog;
 import com.nielsen.simon.foodatcth.adapters.MenuAdapter;
 import com.nielsen.simon.foodatcth.R;
 import com.nielsen.simon.foodatcth.RssItem;
@@ -160,7 +164,12 @@ public class RestaurantFragment extends Fragment {
             new RssTask(days).execute(urls);
         }
 
-        //String TODAY = sdf.format(new Date());
+        ((MenuAdapter) menuAdapter).setClickListener(new MenuAdapter.ClickListener() {
+            @Override
+            public void onClick(View v, Drawable image, String title, String description) {
+                MenuDetailDialog.newInstance(image, title, description).show(getFragmentManager().beginTransaction(), "detailsmenufragment");
+            }
+        });
 
 
         // end read rss feed -----------------------------------------------------

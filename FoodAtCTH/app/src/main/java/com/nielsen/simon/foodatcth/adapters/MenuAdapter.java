@@ -1,6 +1,8 @@
 package com.nielsen.simon.foodatcth.adapters;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +24,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     private ArrayList<String> titleNames;
 
     private boolean reseted;
+    private ClickListener clickListener;
 
     private static final int LIST_ITEM = 0;
     private static final int LIST_TITLE = 1;
@@ -32,7 +35,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         titleNames = new ArrayList<>();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView title, description;
         public ImageView image;
         public int view_type;
@@ -44,8 +47,16 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                 title = (TextView) itemView.findViewById(R.id.menuItemTitle);
                 description = (TextView) itemView.findViewById(R.id.menuItemDescription);
                 image = (ImageView) itemView.findViewById(R.id.menuItemImage);
+                itemView.setOnClickListener(this);
             }else if(viewType == LIST_TITLE || viewType == LIST_HEADER){
                 title = (TextView) itemView.findViewById(R.id.menuTitle);
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (clickListener != null) {
+                clickListener.onClick(v, image.getBackground(), title.getText().toString(), description.getText().toString());
             }
         }
     }
@@ -72,6 +83,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         for(int i = 0; i<titles.length; i++){
             titleNames.add(titles[i]);
         }
+    }
+
+    public void setClickListener(ClickListener clickListener){
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -109,22 +124,22 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             }
             switch (rssItems.get(position).getTitle()) {
                 case "Classic Kött":
-                    holder.image.setImageResource(R.drawable.meat);
+                    holder.image.setBackgroundResource(R.drawable.meat);
                     break;
                 case "Classic Fisk":
-                    holder.image.setImageResource(R.drawable.fish);
+                    holder.image.setBackgroundResource(R.drawable.fish);
                     break;
                 case "Veckans Soppa":
-                    holder.image.setImageResource(R.drawable.soup);
+                    holder.image.setBackgroundResource(R.drawable.soup);
                     break;
                 case "Xpress":
-                    holder.image.setImageResource(R.drawable.xpress);
+                    holder.image.setBackgroundResource(R.drawable.xpress);
                     break;
                 case "Gröna väggen":
-                    holder.image.setImageResource(R.drawable.veg);
+                    holder.image.setBackgroundResource(R.drawable.veg);
                     break;
                 case "Dagens lunch":
-                    holder.image.setImageResource(R.drawable.plate);
+                    holder.image.setBackgroundResource(R.drawable.plate);
             }
         }else{
             holder.title.setText(rssItems.get(position).getTitle());
@@ -146,6 +161,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             return LIST_TITLE;
 
         return LIST_ITEM;
+    }
+
+    public interface ClickListener{
+        public void onClick(View v, Drawable image, String title, String description);
     }
 
 }
