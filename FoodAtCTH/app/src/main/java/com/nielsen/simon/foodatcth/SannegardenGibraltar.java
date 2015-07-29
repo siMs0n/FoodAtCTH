@@ -19,6 +19,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.nielsen.simon.foodatcth.adapters.PizzaMenuAdapter;
 import com.nielsen.simon.foodatcth.database.DbHandler;
 
 import java.util.ArrayList;

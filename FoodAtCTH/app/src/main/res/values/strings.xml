@@ -20,6 +20,8 @@
     <string name="database_error">Couldn\'t load the database for you</string>
 
     <string name="student_union_restaurant_link">http://cm.lskitchen.se/johanneberg/karrestaurangen/sv/</string>
+    <string name="linsen_link">http://cm.lskitchen.se/johanneberg/linsen/sv/</string>
+    <string name="l_kitchen_link">http://cm.lskitchen.se/lindholmen/foodcourt/sv/</string>
 
     <string name="sanne_gibraltar">Sannegården Gibraltar</string>
     <string name="faijtas">Miss Faijtas</string>

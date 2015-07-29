@@ -1,4 +1,4 @@
-package com.nielsen.simon.foodatcth;
+package com.nielsen.simon.foodatcth.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

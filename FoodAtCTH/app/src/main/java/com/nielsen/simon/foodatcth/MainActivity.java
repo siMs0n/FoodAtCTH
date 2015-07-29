@@ -1,12 +1,6 @@
 package com.nielsen.simon.foodatcth;
 
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -17,20 +11,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
+import com.nielsen.simon.foodatcth.adapters.DrawerAdapter;
+import com.nielsen.simon.foodatcth.adapters.TabsAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
