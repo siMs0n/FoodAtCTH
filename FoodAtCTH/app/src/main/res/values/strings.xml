@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FoodAtCTH</string>
+    <string name="app_name">Mat på Chalmers</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -23,9 +23,14 @@
     <string name="linsen_link">http://cm.lskitchen.se/johanneberg/linsen/sv/</string>
     <string name="l_kitchen_link">http://cm.lskitchen.se/lindholmen/foodcourt/sv/</string>
 
+    <string name="johanneberg">Campus Johanneberg</string>
+    <string name="lindholmen">Campus Lindholmen</string>
     <string name="sanne_gibraltar">Sannegården Gibraltar</string>
     <string name="faijtas">Miss Faijtas</string>
+    <string name="sanne_hisingen">Sannegården Hisingen</string>
     <string name="nemos">Kapten Nemos Pizzeria</string>
+    <string name="settings">Inställningar</string>
+    <string name="feedback">Hjälp och feedback</string>
     <string name="search">Sök</string>
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -23,8 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
 
     //Variables for Navigation Drawer ------------------------------------
-    private String titles[] = {"Campus Johanneberg", "Campus Lindholmen", "Sannegården", "Inställningar", "Hjälp och feedback"};
-    private int icons[] = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
+    private String titles[];// = {"Campus Johanneberg", "Campus Lindholmen", "Sannegården Gibraltar", "", "Inställningar", "Hjälp och feedback"};
+    private int icons[] = {R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher, R.mipmap.ic_launcher};
 
     RecyclerView drawerRecyclerView, menuRecyclerView;
     DrawerAdapter drawerAdapter, menuAdapter;
@@ -49,6 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
         appName = this.getResources().getString(R.string.app_name);
         tagLine = this.getResources().getString(R.string.tag_line);
+
+        titles = new String[]{getResources().getString(R.string.johanneberg), getResources().getString(R.string.lindholmen),
+                getResources().getString(R.string.sanne_gibraltar), getResources().getString(R.string.faijtas),
+                getResources().getString(R.string.sanne_hisingen), getResources().getString(R.string.nemos),
+                getResources().getString(R.string.settings), getResources().getString(R.string.feedback)};
 
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
