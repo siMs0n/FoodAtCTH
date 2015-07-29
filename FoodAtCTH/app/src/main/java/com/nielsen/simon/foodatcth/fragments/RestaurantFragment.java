@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.nielsen.simon.foodatcth.database.DbHandler;
+import com.nielsen.simon.foodatcth.database.DbHandlerRSS;
 import com.nielsen.simon.foodatcth.dialog.MenuDetailDialog;
 import com.nielsen.simon.foodatcth.adapters.MenuAdapter;
 import com.nielsen.simon.foodatcth.R;
@@ -30,15 +32,22 @@ import java.util.List;
 public class RestaurantFragment extends Fragment {
 
     private int page;
-    private int progressBarShowing=0;
+    private int progressBarShowing = 0;
+    private int downloadedMenus = 0;
     private boolean hasDisplayedErrorMsg;
     private ProgressBar progressBar;
+    private DbHandlerRSS dbHandlerRSS;
+    private List<RssItem> menuItems;
+    private List<RssItem> downloadedMenuItems;
+    private DbHandlerRSS.Restaurant restaurant;
 
     private static int[] URL_IDS = new int[]{R.string.student_union_restaurant_link, R.string.linsen_link};
+    private static DbHandlerRSS.Restaurant[] restaurants = {DbHandlerRSS.Restaurant.STUDENT_UNION_RESTAURANT, DbHandlerRSS.Restaurant.LINSEN};
 
     RecyclerView menuRecyclerView;
     RecyclerView.Adapter menuAdapter;
     RecyclerView.LayoutManager menuLayoutManager;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -68,17 +77,24 @@ public class RestaurantFragment extends Fragment {
         if (savedInstanceState != null) {
             String[] titles = savedInstanceState.getStringArray("titles");
             String[] descriptions = savedInstanceState.getStringArray("descriptions");
-            if (titles != null && descriptions!=null) {
+            if (titles != null && descriptions != null) {
                 ArrayList<RssItem> rssItems = new ArrayList<>();
-                for(int i = 0; i<titles.length ;i++){
-                    rssItems.add(new RssItem(titles[i],descriptions[i]));
+                for (int i = 0; i < titles.length; i++) {
+                    rssItems.add(new RssItem(titles[i], descriptions[i]));
                 }
-                ((MenuAdapter)menuAdapter).setRssItems(rssItems);
+                ((MenuAdapter) menuAdapter).setRssItems(rssItems);
                 Log.v("myApp", "Loaded tab ");
             }
         }
         Log.v("myApp", "Creating tab " + page);
 
+        dbHandlerRSS = DbHandlerRSS.getInstance(getActivity());
+        restaurant = restaurants[page];
+        ArrayList<RssItem> dbMenu = dbHandlerRSS.getMenuForRestaurant(restaurant);
+        if (!dbMenu.isEmpty()) {
+            loadFoodMenu(dbMenu, true);
+        }
+        downloadedMenuItems = new ArrayList<>();
     }
 
     @Override
@@ -105,12 +121,12 @@ public class RestaurantFragment extends Fragment {
         Log.v("myApp", "Pause");
     }
 
-    public void onSaveInstanceState(Bundle savedState){
+    public void onSaveInstanceState(Bundle savedState) {
         super.onSaveInstanceState(savedState);
-       List<RssItem> rssItems = ((MenuAdapter)menuAdapter).getRssItems();
+        List<RssItem> rssItems = ((MenuAdapter) menuAdapter).getRssItems();
         String[] titles = new String[rssItems.size()];
         String[] descriptions = new String[rssItems.size()];
-        for(int i = 0; i < rssItems.size(); i++){
+        for (int i = 0; i < rssItems.size(); i++) {
             titles[i] = rssItems.get(i).getTitle();
             descriptions[i] = rssItems.get(i).getDescription();
         }
@@ -120,15 +136,14 @@ public class RestaurantFragment extends Fragment {
     }
 
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_campus_johanneberg, container, false);
-        Log.v("myApp","Inflate fragment");
+        Log.v("myApp", "Inflate fragment");
 
-        progressBar = (ProgressBar)v.findViewById(R.id.progressBar);
+        progressBar = (ProgressBar) v.findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
         //Set up basic menu ------------------------------------------------------
@@ -145,24 +160,22 @@ public class RestaurantFragment extends Fragment {
         menuRecyclerView.setLayoutManager(menuLayoutManager);
         // End set up basic menu -------------------------------------------------
         // Read rss feed ---------------------------------------------------------
-        if(!((MenuAdapter)menuAdapter).hasBeenReset()) {
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.DAY_OF_WEEK, 2);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat sdf2 = new SimpleDateFormat("EEEE");
-            String[] urls = new String[5];
-            String[] days = new String[5];
-            for (int i = 0; i < 5; i++) {
-                String date = "2015-05-29";//sdf.format(cal.getTime());
-                String day = sdf2.format(cal.getTime());
-                urls[i] = getResources().getString(URL_IDS[page]) + date + ".rss";
-                String capDay = day.substring(0,1).toUpperCase()+day.substring(1);
-                days[i] = capDay;
-                cal.add(Calendar.DAY_OF_WEEK, 1);
-            }
-            ((MenuAdapter) menuAdapter).setTitleNames(days);
-            new RssTask(days).execute(urls);
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_WEEK, 2);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("EEEE");
+        String[] urls = new String[5];
+        String[] days = new String[5];
+        for (int i = 0; i < 5; i++) {
+            String date = sdf.format(cal.getTime());
+            String day = sdf2.format(cal.getTime());
+            urls[i] = getResources().getString(URL_IDS[page]) + date + ".rss";
+            String capDay = day.substring(0, 1).toUpperCase() + day.substring(1);
+            days[i] = capDay;
+            cal.add(Calendar.DAY_OF_WEEK, 1);
         }
+        ((MenuAdapter) menuAdapter).setTitleNames(days);
+        new RssTask(days).execute(urls);
 
         ((MenuAdapter) menuAdapter).setClickListener(new MenuAdapter.ClickListener() {
             @Override
@@ -178,7 +191,8 @@ public class RestaurantFragment extends Fragment {
 
     private class RssTask extends AsyncTask<String, Void, List<RssItem>> {
         private String[] days;
-        public RssTask(String[] days){
+
+        public RssTask(String[] days) {
             this.days = days;
         }
 
@@ -191,11 +205,11 @@ public class RestaurantFragment extends Fragment {
         @Override
         protected List<RssItem> doInBackground(String[] urls) {
 
-            try{
+            try {
                 RssReader rssReader = new RssReader(urls, days);
-                Log.v("myApp","Reading rss from doInBackground");
+                Log.v("myApp", "Reading rss from doInBackground");
                 return rssReader.readRss();
-            }catch (IOException e){
+            } catch (IOException e) {
 
             }
 
@@ -206,36 +220,57 @@ public class RestaurantFragment extends Fragment {
         protected void onPostExecute(List<RssItem> rssItems) {
             super.onPostExecute(rssItems);
             Log.v("myApp", "Executed");
-            loadFoodMenu(rssItems);
+            loadFoodMenu(rssItems, false);
             dismissLoadingAnimation();
         }
     }
 
-    private void startLoadingAnimation(){
-        if(progressBarShowing==0) {
+    private void startLoadingAnimation() {
+        if (progressBarShowing == 0) {
             progressBar.setVisibility(View.VISIBLE);
             menuRecyclerView.setVisibility(View.GONE);
         }
         progressBarShowing++;
     }
 
-    private void dismissLoadingAnimation(){
+    private void dismissLoadingAnimation() {
         progressBarShowing--;
-        if(progressBarShowing==0) {
+        if (progressBarShowing == 0) {
             menuRecyclerView.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.GONE);
         }
     }
 
-    private void loadFoodMenu(List<RssItem> rssItems){
-        if(rssItems!=null) {
-            //Log.v("myApp", day + rssItems.size());
-            ((MenuAdapter) menuAdapter).updateRssList(rssItems);
+    private void loadFoodMenu(List<RssItem> rssItems, boolean fromDB) {
+        if (rssItems != null && isUpdatedMenu(rssItems)) {
+            ((MenuAdapter) menuAdapter).setRssItems(rssItems);
             menuAdapter.notifyDataSetChanged();
-        }else if(rssItems==null && !hasDisplayedErrorMsg){
+            menuItems = rssItems;
+            dismissLoadingAnimation();
+            if (!fromDB) {
+                dbHandlerRSS.replaceRestaurantMenu(restaurant, rssItems);
+            }
+        } else if (rssItems == null && !hasDisplayedErrorMsg) {
             Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.menu_error), Toast.LENGTH_SHORT).show();
             hasDisplayedErrorMsg = true;
         }
+    }
+
+    private boolean isUpdatedMenu(List<RssItem> newRssItems) {
+        if (menuItems == null) {
+            return true;
+        } else if (newRssItems.size() != menuItems.size()) {
+            return true;
+        }
+
+        for (int i = 0; i < newRssItems.size(); i++) {
+            if (!newRssItems.get(i).getTitle().equalsIgnoreCase(menuItems.get(i).getTitle()) ||
+                    !newRssItems.get(i).getDescription().equalsIgnoreCase(menuItems.get(i).getDescription())) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }
