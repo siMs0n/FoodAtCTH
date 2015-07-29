@@ -123,6 +123,8 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                 case "Gröna väggen":
                     holder.image.setImageResource(R.drawable.veg);
                     break;
+                case "Dagens lunch":
+                    holder.image.setImageResource(R.drawable.plate);
             }
         }else{
             holder.title.setText(rssItems.get(position).getTitle());

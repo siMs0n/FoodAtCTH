@@ -36,7 +36,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="22dp"
-            android:text="Medium text" />
+            android:text="Medium text"
+            android:maxLines="2"
+            android:ellipsize="end"/>
     </LinearLayout>
 
 </LinearLayout>
