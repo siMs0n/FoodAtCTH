@@ -2,43 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="72dp"
+    android:background="#ffffff"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp"
-    android:orientation="horizontal"
-    android:background="#ffffff">
+    android:paddingTop="8dp">
 
     <ImageView
         android:id="@+id/menuItemImage"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_marginLeft="2dp"
         android:layout_gravity="center_vertical"
+        android:layout_marginLeft="2dp"
         android:src="@drawable/fish" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceListItem"
-        android:text="Medium text"
-        android:layout_toLeftOf="@+id/menuItemImage"
-        android:layout_marginLeft="22dp"
-        android:id="@+id/menuItemTitle"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/Base.TextAppearance.AppCompat.Display2"
-        android:textSize="14sp"
-        android:text="Medium text"
-        android:layout_marginLeft="22dp"
-        android:layout_toLeftOf="@+id/menuItemImage"
-        android:layout_below="@+id/menuItemTitle"
-        android:id="@+id/menuItemDescription"/>
+        <TextView
+            android:id="@+id/menuItemTitle"
+            style="@style/PrimaryListText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:text="Medium text" />
+
+        <TextView
+            android:id="@+id/menuItemDescription"
+            style="@style/SecondaryListText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="22dp"
+            android:text="Medium text" />
     </LinearLayout>
 
 </LinearLayout>
