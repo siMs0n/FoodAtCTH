@@ -23,12 +23,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class CampusJohannebergFragment extends Fragment {
+public class RestaurantFragment extends Fragment {
 
     private int page;
     private int progressBarShowing=0;
     private boolean hasDisplayedErrorMsg;
     private ProgressBar progressBar;
+
+    private static int[] URL_IDS = new int[]{R.string.student_union_restaurant_link, R.string.linsen_link};
 
     RecyclerView menuRecyclerView;
     RecyclerView.Adapter menuAdapter;
@@ -38,17 +40,17 @@ public class CampusJohannebergFragment extends Fragment {
      * this fragment using the provided parameters.
      *
      * @param page Which pagenumber
-     * @return A new instance of fragment CampusJohannebergFragment.
+     * @return A new instance of fragment RestaurantFragment.
      */
-    public static CampusJohannebergFragment newInstance(int page) {
-        CampusJohannebergFragment fragment = new CampusJohannebergFragment();
+    public static RestaurantFragment newInstance(int page) {
+        RestaurantFragment fragment = new RestaurantFragment();
         Bundle args = new Bundle();
         args.putInt("page", page);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public CampusJohannebergFragment() {
+    public RestaurantFragment() {
         // Required empty public constructor
     }
 
@@ -147,9 +149,9 @@ public class CampusJohannebergFragment extends Fragment {
             String[] urls = new String[5];
             String[] days = new String[5];
             for (int i = 0; i < 5; i++) {
-                String date = sdf.format(cal.getTime());
+                String date = "2015-05-29";//sdf.format(cal.getTime());
                 String day = sdf2.format(cal.getTime());
-                urls[i] = getResources().getString(R.string.student_union_restaurant_link) + date + ".rss";
+                urls[i] = getResources().getString(URL_IDS[page]) + date + ".rss";
                 String capDay = day.substring(0,1).toUpperCase()+day.substring(1);
                 days[i] = capDay;
                 cal.add(Calendar.DAY_OF_WEEK, 1);

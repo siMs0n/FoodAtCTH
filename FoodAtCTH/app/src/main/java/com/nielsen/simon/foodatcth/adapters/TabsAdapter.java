@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.nielsen.simon.foodatcth.fragments.CampusJohannebergFragment;
+import com.nielsen.simon.foodatcth.fragments.RestaurantFragment;
 
 /**
  * Created by Simon on 2015-06-06.
@@ -22,7 +22,7 @@ public class TabsAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return CampusJohannebergFragment.newInstance(position);
+        return RestaurantFragment.newInstance(position);
     }
 
     @Override

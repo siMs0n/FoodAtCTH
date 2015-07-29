@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     TabsAdapter tabsAdapter;
     ViewPager tabsPager;
-    static final int NUM_ITEMS = 3;
+    static final int NUM_ITEMS = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Set up tabs ------------------------------------------------------------
 
-        String[] tabTitles = {"    Linsen    ", "Kårrestaurangen", "    Hyllan    "};
+        String[] tabTitles = {"Kårrestaurangen", "Linsen"};
         tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS, tabTitles);
 
         tabsPager = (ViewPager) findViewById(R.id.viewpager);
@@ -97,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(tabsPager);
         tabLayout.setBackgroundColor(getResources().getColor(R.color.primaryColor));
-        tabsPager.setCurrentItem(1);
 
         //End set up tabs --------------------------------------------------------
     }
