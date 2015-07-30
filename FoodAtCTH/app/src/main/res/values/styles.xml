@@ -9,6 +9,10 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
         <item name="colorAccent">@color/accentColor</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/background_material_light</item>
     </style>
     
     <style name="PrimaryListText">

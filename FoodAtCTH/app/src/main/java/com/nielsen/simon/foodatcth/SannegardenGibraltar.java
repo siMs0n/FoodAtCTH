@@ -33,6 +33,7 @@ public class SannegardenGibraltar extends AppCompatActivity {
     private ArrayList<Pizza> menu;
     private DbHandler dbHandler;
 
+    //CollapsingToolbarLayout collapsingToolbar;
     private RecyclerView menuRecyclerView;
     private PizzaMenuAdapter menuAdapter;
     private RecyclerView.LayoutManager menuLayoutManager;
@@ -48,6 +49,9 @@ public class SannegardenGibraltar extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.pizza_app_bar);
         setSupportActionBar(toolbar);
+
+        //collapsingToolbar = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
+        //collapsingToolbar.setTitle("Sannegården");
 
         //Set up basic menu ------------------------------------------------------
 
