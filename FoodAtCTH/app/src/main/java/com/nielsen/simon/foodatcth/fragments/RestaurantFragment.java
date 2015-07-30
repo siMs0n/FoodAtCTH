@@ -1,7 +1,5 @@
 package com.nielsen.simon.foodatcth.fragments;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,10 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.nielsen.simon.foodatcth.database.DbHandler;
 import com.nielsen.simon.foodatcth.database.DbHandlerRSS;
 import com.nielsen.simon.foodatcth.dialog.MenuDetailDialog;
 import com.nielsen.simon.foodatcth.adapters.MenuAdapter;
@@ -33,7 +32,7 @@ public class RestaurantFragment extends Fragment {
 
     private int page;
     private int progressBarShowing = 0;
-    private int downloadedMenus = 0;
+    private boolean isOnlyExpress, isJohanneberg;
     private boolean hasDisplayedErrorMsg;
     private ProgressBar progressBar;
     private DbHandlerRSS dbHandlerRSS;
@@ -41,8 +40,10 @@ public class RestaurantFragment extends Fragment {
     private List<RssItem> downloadedMenuItems;
     private DbHandlerRSS.Restaurant restaurant;
 
-    private static int[] URL_IDS = new int[]{R.string.student_union_restaurant_link, R.string.linsen_link};
-    private static DbHandlerRSS.Restaurant[] restaurants = {DbHandlerRSS.Restaurant.STUDENT_UNION_RESTAURANT, DbHandlerRSS.Restaurant.LINSEN};
+    private static int[] URL_IDS_JOHANNEBERG = new int[]{R.string.student_union_restaurant_link, R.string.linsen_link};
+    private static DbHandlerRSS.Restaurant[] restaurantsJohanneberg = {DbHandlerRSS.Restaurant.STUDENT_UNION_RESTAURANT, DbHandlerRSS.Restaurant.LINSEN};
+    private static int[] URL_IDS_LINDHOLMEN = new int[]{R.string.l_kitchen_link, R.string.student_union_restaurant_link};
+    private static DbHandlerRSS.Restaurant[] restaurantsLindholmen = {DbHandlerRSS.Restaurant.LSKITCHEN, DbHandlerRSS.Restaurant.STUDENT_UNION_RESTAURANT};
 
     RecyclerView menuRecyclerView;
     RecyclerView.Adapter menuAdapter;
@@ -55,10 +56,11 @@ public class RestaurantFragment extends Fragment {
      * @param page Which pagenumber
      * @return A new instance of fragment RestaurantFragment.
      */
-    public static RestaurantFragment newInstance(int page) {
+    public static RestaurantFragment newInstance(int page, boolean isJohanneberg) {
         RestaurantFragment fragment = new RestaurantFragment();
         Bundle args = new Bundle();
         args.putInt("page", page);
+        args.putBoolean("isJohanneberg", isJohanneberg);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,6 +74,10 @@ public class RestaurantFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             page = getArguments().getInt("page");
+            isJohanneberg = getArguments().getBoolean("isJohanneberg");
+            if(isJohanneberg && page==1){
+                isOnlyExpress = true;
+            }
         }
         menuAdapter = new MenuAdapter();
         if (savedInstanceState != null) {
@@ -89,7 +95,11 @@ public class RestaurantFragment extends Fragment {
         Log.v("myApp", "Creating tab " + page);
 
         dbHandlerRSS = DbHandlerRSS.getInstance(getActivity());
-        restaurant = restaurants[page];
+        if(isJohanneberg){
+            restaurant = restaurantsJohanneberg[page];
+        }else{
+            restaurant = restaurantsLindholmen[page];
+        }
         ArrayList<RssItem> dbMenu = dbHandlerRSS.getMenuForRestaurant(restaurant);
         if (!dbMenu.isEmpty()) {
             loadFoodMenu(dbMenu, true);
@@ -169,7 +179,10 @@ public class RestaurantFragment extends Fragment {
         for (int i = 0; i < 5; i++) {
             String date = sdf.format(cal.getTime());
             String day = sdf2.format(cal.getTime());
-            urls[i] = getResources().getString(URL_IDS[page]) + date + ".rss";
+            if(isJohanneberg)
+                urls[i] = getResources().getString(URL_IDS_JOHANNEBERG[page]) + date + ".rss";
+            else
+                urls[i] = getResources().getString(URL_IDS_LINDHOLMEN[page]) + date + ".rss";
             String capDay = day.substring(0, 1).toUpperCase() + day.substring(1);
             days[i] = capDay;
             cal.add(Calendar.DAY_OF_WEEK, 1);
@@ -220,6 +233,9 @@ public class RestaurantFragment extends Fragment {
         protected void onPostExecute(List<RssItem> rssItems) {
             super.onPostExecute(rssItems);
             Log.v("myApp", "Executed");
+            if(isOnlyExpress){
+                rssItems = isolateExpressItems(rssItems, days);
+            }
             loadFoodMenu(rssItems, false);
             dismissLoadingAnimation();
         }
@@ -271,6 +287,23 @@ public class RestaurantFragment extends Fragment {
         }
 
         return false;
+    }
+
+    private List<RssItem> isolateExpressItems(List<RssItem> rssItems, String[] days){
+        ArrayList<RssItem> newRssItemList = new ArrayList<>();
+
+        for(int i = 0; i<rssItems.size(); i++){
+            for(String day: days){
+                if(rssItems.get(i).getTitle().equalsIgnoreCase(day)){
+                    newRssItemList.add(rssItems.get(i));
+                    break;
+                }
+            }
+            if(rssItems.get(i).getTitle().equalsIgnoreCase("Xpress")){
+                newRssItemList.add(rssItems.get(i));
+            }
+        }
+        return  newRssItemList;
     }
 
 }

@@ -28,6 +28,7 @@ public class DbHandlerRSS extends SQLiteOpenHelper {
     private static final String TABLE_UNION = "tableunion";
     private static final String TABLE_LINSEN = "tablelinsen";
     private static final String TABLE_LSKITCHEN = "tablelskitchen";
+    private static final String TABLE_KOKBOKEN = "tablekokboken";
 
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_TITLE = "title";
@@ -38,7 +39,7 @@ public class DbHandlerRSS extends SQLiteOpenHelper {
     private static DbHandlerRSS dbHandlerRSS;
 
     public static enum Restaurant{
-        STUDENT_UNION_RESTAURANT, LINSEN, LSKITCHEN
+        STUDENT_UNION_RESTAURANT, LINSEN, LSKITCHEN, KOKBOKEN
     }
 
     // Database creation sql statement
@@ -54,7 +55,10 @@ public class DbHandlerRSS extends SQLiteOpenHelper {
             + TABLE_LSKITCHEN + "(" + COLUMN_ID
             + " integer primary key autoincrement, " + COLUMN_TITLE
             + " text not null, " + COLUMN_DESCRIPTION + " text);";
-
+    private static final String DATABASE_CREATE_KOKBOKEN = "create table "
+            + TABLE_KOKBOKEN + "(" + COLUMN_ID
+            + " integer primary key autoincrement, " + COLUMN_TITLE
+            + " text not null, " + COLUMN_DESCRIPTION + " text);";
 
     public DbHandlerRSS(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -62,6 +66,7 @@ public class DbHandlerRSS extends SQLiteOpenHelper {
         restaurantStringMap.put(Restaurant.STUDENT_UNION_RESTAURANT, TABLE_UNION);
         restaurantStringMap.put(Restaurant.LINSEN, TABLE_LINSEN);
         restaurantStringMap.put(Restaurant.LSKITCHEN, TABLE_LSKITCHEN);
+        restaurantStringMap.put(Restaurant.KOKBOKEN, TABLE_KOKBOKEN);
     }
 
     public static DbHandlerRSS getInstance(Context context){
@@ -76,6 +81,7 @@ public class DbHandlerRSS extends SQLiteOpenHelper {
         db.execSQL(DATABASE_CREATE_UNION);
         db.execSQL(DATABASE_CREATE_LINSEN);
         db.execSQL(DATABASE_CREATE_LSKITCHEN);
+        db.execSQL(DATABASE_CREATE_KOKBOKEN);
     }
 
     @Override
@@ -83,6 +89,7 @@ public class DbHandlerRSS extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_UNION);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LINSEN);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_LSKITCHEN);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_KOKBOKEN);
         onCreate(db);
     }
 

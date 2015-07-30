@@ -13,16 +13,18 @@ public class TabsAdapter extends FragmentPagerAdapter {
 
     private int numberOfTabs;
     private String[] tabTitles;
+    private boolean isJohanneberg;
 
-    public TabsAdapter(FragmentManager fm, int numberOfTabs, String[] tabTitles){
+    public TabsAdapter(FragmentManager fm, int numberOfTabs, String[] tabTitles, boolean isJohanneberg){
         super(fm);
         this.numberOfTabs = numberOfTabs;
         this.tabTitles = tabTitles;
+        this.isJohanneberg = isJohanneberg;
     }
 
     @Override
     public Fragment getItem(int position) {
-        return RestaurantFragment.newInstance(position);
+        return RestaurantFragment.newInstance(position, isJohanneberg);
     }
 
     @Override

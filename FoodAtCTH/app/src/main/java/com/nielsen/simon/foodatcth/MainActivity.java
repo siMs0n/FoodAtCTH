@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -93,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         //Set up tabs ------------------------------------------------------------
 
         String[] tabTitles = {"Kårrestaurangen", "Linsen"};
-        tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS, tabTitles);
+        tabsAdapter = new TabsAdapter(getSupportFragmentManager(), NUM_ITEMS, tabTitles, true);
 
         tabsPager = (ViewPager) findViewById(R.id.viewpager);
         tabsPager.setAdapter(tabsAdapter);
@@ -116,12 +117,23 @@ public class MainActivity extends AppCompatActivity {
      * Swaps fragments in the main content view
      */
     private void selectItem(int itemID) {
-
-        if(itemID==R.id.item_row){
-
+        Log.v("myApp","ID: " + itemID);
+        Intent a;
+        switch (itemID){
+            case 0:
+                a = new Intent(MainActivity.this, MainActivity.class);
+                break;
+            case 1:
+                a = new Intent(MainActivity.this, LindholmenActivity.class);
+                break;
+            case 2:
+                a = new Intent(MainActivity.this, SannegardenGibraltar.class);
+                break;
+            default:
+                a = new Intent(MainActivity.this, SannegardenGibraltar.class);
+                break;
         }
 
-        Intent a = new Intent(MainActivity.this, SannegardenGibraltar.class);
         startActivity(a);
 
         drawer.closeDrawer(GravityCompat.START);

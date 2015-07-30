@@ -23,6 +23,10 @@
             android:name=".SannegardenGibraltar"
             android:label="@string/sanne_gibraltar" >
         </activity>
+        <activity
+            android:name=".LindholmenActivity"
+            android:label="@string/lindholmen" >
+        </activity>
     </application>
 
 </manifest>

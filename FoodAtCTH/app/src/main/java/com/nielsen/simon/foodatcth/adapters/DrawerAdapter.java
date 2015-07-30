@@ -40,15 +40,6 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
         if (viewType == TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row,parent,false); //Inflating the layout
 
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(clickListener!=null){
-                        clickListener.onClick(v, v.getId());
-                    }
-                }
-            });
-
             ViewHolder vhItem = new ViewHolder(v,viewType); //Creating ViewHolder and passing the object of type view
 
             return vhItem; // Returning the created object
@@ -107,7 +98,7 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
         return position == 0;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         int Holderid;
         int itemId;
 
@@ -126,12 +117,20 @@ public class DrawerAdapter extends RecyclerView.Adapter<DrawerAdapter.ViewHolder
                 textView = (TextView) itemView.findViewById(R.id.rowText); // Creating TextView object with the id of textView from item_row.xml
                 imageView = (ImageView) itemView.findViewById(R.id.rowIcon);// Creating ImageView object with the id of ImageView from item_row.xml
                 Holderid = 1;                                               // setting holder id as 1 as the object being populated are of type item row
+                itemView.setOnClickListener(this);
             }
             else{
                 Name = (TextView) itemView.findViewById(R.id.name);         // Creating Text View object from header.xml for name
                 email = (TextView) itemView.findViewById(R.id.email);       // Creating Text View object from header.xml for email
                 profile = (ImageView) itemView.findViewById(R.id.circleView);// Creating Image view object from header.xml for profile pic
                 Holderid = 0;                                                // Setting holder id = 0 as the object being populated are of type header view
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(clickListener!=null){
+                clickListener.onClick(v, itemId);
             }
         }
     }

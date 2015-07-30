@@ -2,7 +2,6 @@ package com.nielsen.simon.foodatcth.adapters;
 
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,6 +139,10 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                     break;
                 case "Dagens lunch":
                     holder.image.setBackgroundResource(R.drawable.plate);
+                    break;
+                default:
+                    holder.image.setBackgroundResource(R.drawable.plate);
+                    break;
             }
         }else{
             holder.title.setText(rssItems.get(position).getTitle());
