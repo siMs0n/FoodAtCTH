@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         tagLine = this.getResources().getString(R.string.tag_line);
 
         titles = new String[]{getResources().getString(R.string.johanneberg), getResources().getString(R.string.lindholmen),
-                getResources().getString(R.string.sanne_gibraltar), getResources().getString(R.string.faijtas),
+                getResources().getString(R.string.sanne_gibraltar), getResources().getString(R.string.fajitas),
                 getResources().getString(R.string.sanne_hisingen), getResources().getString(R.string.nemos),
                 getResources().getString(R.string.settings), getResources().getString(R.string.feedback)};
 

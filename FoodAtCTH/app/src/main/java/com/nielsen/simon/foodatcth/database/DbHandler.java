@@ -7,7 +7,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.support.annotation.NonNull;
 
 import com.nielsen.simon.foodatcth.Message;
 import com.nielsen.simon.foodatcth.Pizza;
@@ -18,10 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Created by Simon on 2015-07-20.
@@ -34,7 +31,7 @@ public class DbHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "menus.db";
     public static final String TABLE_SANNE_GIBRALTAR = "Sanne_Gibraltar_Menu_Complete";
-    public static final String TABLE_FAIJTAS = "faijtas";
+    public static final String TABLE_FAJITAS = "fajitas";
 
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_PRODUCTNAME = "productname";
@@ -58,7 +55,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public Map<PizzaMenu, String> pizzaTables;
 
     public static enum Menu {
-        FAIJTAS
+        FAJITAS
     }
 
     public static enum PizzaMenu {
@@ -71,7 +68,7 @@ public class DbHandler extends SQLiteOpenHelper {
         pizzaTables = new HashMap<PizzaMenu, String>();
         menuTables = new HashMap<Menu, String>();
         pizzaTables.put(PizzaMenu.SANNE_GIBRALTAR, TABLE_SANNE_GIBRALTAR);
-        menuTables.put(Menu.FAIJTAS, TABLE_FAIJTAS);
+        menuTables.put(Menu.FAJITAS, TABLE_FAJITAS);
         try {
             createDataBase();
         } catch (IOException e) {
@@ -85,7 +82,7 @@ public class DbHandler extends SQLiteOpenHelper {
         pizzaTables = new HashMap<>();
         menuTables = new HashMap<>();
         pizzaTables.put(PizzaMenu.SANNE_GIBRALTAR, TABLE_SANNE_GIBRALTAR);
-        menuTables.put(Menu.FAIJTAS, TABLE_FAIJTAS);
+        menuTables.put(Menu.FAJITAS, TABLE_FAJITAS);
         try {
             createDataBase();
         } catch (IOException e) {
