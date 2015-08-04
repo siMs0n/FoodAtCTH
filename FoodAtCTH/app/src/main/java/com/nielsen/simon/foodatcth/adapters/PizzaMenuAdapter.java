@@ -10,13 +10,14 @@ import com.nielsen.simon.foodatcth.Pizza;
 import com.nielsen.simon.foodatcth.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Simon on 2015-07-26.
  */
 public class PizzaMenuAdapter extends RecyclerView.Adapter<PizzaMenuAdapter.ViewHolder> {
 
-    private ArrayList<Pizza> menu;
+    private List<Pizza> menu;
 
     private static final int LIST_ITEM = 0;
     private static final int LIST_TITLE = 1;
@@ -42,11 +43,12 @@ public class PizzaMenuAdapter extends RecyclerView.Adapter<PizzaMenuAdapter.View
         }
     }
 
-    public void setMenu(ArrayList<Pizza> menu){
+    public void setMenu(List<Pizza> menu){
         this.menu = menu;
+        notifyDataSetChanged();
     }
 
-    public ArrayList<Pizza> getMenu(){
+    public List<Pizza> getMenu(){
         return menu;
     }
 

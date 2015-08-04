@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    card_view:cardBackgroundColor="#FFF"
+    card_view:cardCornerRadius="2dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/cardTitleText"
+            style="@style/CardTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pizzagrupp 1"
+            android:textAllCaps="true" />
+
+        <TextView
+            android:id="@+id/cardPriceText"
+            style="@style/CardSubTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="70 kr" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/cardMenuRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/cardTitleText"
+            android:layout_marginTop="10dp"
+            android:background="#ffffff"></android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

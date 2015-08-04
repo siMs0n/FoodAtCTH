@@ -59,7 +59,6 @@ public class SannegardenGibraltar extends AppCompatActivity {
 
         menuAdapter = new PizzaMenuAdapter();
         menuRecyclerView.setAdapter(menuAdapter);
-        //menuRecyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
         menuLayoutManager = new LinearLayoutManager(this);
         menuRecyclerView.setLayoutManager(menuLayoutManager);
         // End set up basic menu -------------------------------------------------
@@ -143,7 +142,6 @@ public class SannegardenGibraltar extends AppCompatActivity {
                 public void afterTextChanged(Editable s) {
                     menu = dbHandler.getPizzaMenuSearchResult(DbHandler.PizzaMenu.SANNE_GIBRALTAR, editSearch.getText().toString());
                     menuAdapter.setMenu(menu);
-                    menuAdapter.notifyDataSetChanged();
                 }
             });
 
@@ -180,7 +178,6 @@ public class SannegardenGibraltar extends AppCompatActivity {
 
         menu = dbHandler.getPizzaMenu(DbHandler.PizzaMenu.SANNE_GIBRALTAR);
         menuAdapter.setMenu(menu);
-        menuAdapter.notifyDataSetChanged();
         Log.v("search", "After close search get db");
 
         isSearchOpened = false;

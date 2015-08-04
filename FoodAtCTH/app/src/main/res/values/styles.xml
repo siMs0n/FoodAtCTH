@@ -23,5 +23,15 @@
         <item name="android:textColor">#777777</item>
         <item name="android:textSize">14sp</item>
     </style>
+    <style name="CardTitleText">
+        <item name="android:textColor">@color/primaryColor</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="CardSubTitleText">
+        <item name="android:textColor">#000</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 
 </resources>
