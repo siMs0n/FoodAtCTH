@@ -7,6 +7,21 @@
         android:id="@+id/pizza_app_bar"
         layout="@layout/pizza_app_bar" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/contentHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+        </LinearLayout>
+
+    </ScrollView>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/MenuRecyclerView"
         android:layout_width="match_parent"

@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.nielsen.simon.foodatcth.adapters.PizzaMenuAdapter;
@@ -52,6 +53,7 @@ public class CardSanneGroup extends CardView{
         for(Pizza pizza: pizzaList){
             if(pizza.getGroupNr() == groupNr){
                 groupPizzaList.add(pizza);
+                Log.v("myApp", "Adding pizza " + pizza.getName());
                 if(!priceSet){
                     price = pizza.getPrice();
                     priceSet = true;
@@ -63,6 +65,7 @@ public class CardSanneGroup extends CardView{
             }
         }
         this.pizzaList = groupPizzaList;
+        Log.v("myApp", "List size: " + this.pizzaList.size());
         if(showPrice){
             ((TextView)findViewById(R.id.cardPriceText)).setText(price + " kr");
         }else{
@@ -70,14 +73,14 @@ public class CardSanneGroup extends CardView{
         }
         ((TextView)findViewById(R.id.cardTitleText)).setText(getContext().getResources().getString(R.string.pizzagroup) + " " + groupNr);
 
-        menuRecyclerView = (RecyclerView) findViewById(R.id.MenuRecyclerView);
+        menuRecyclerView = (RecyclerView) findViewById(R.id.cardMenuRecyclerView);
 
         menuAdapter = new PizzaMenuAdapter();
         menuRecyclerView.setAdapter(menuAdapter);
         menuLayoutManager = new LinearLayoutManager(getContext());
         menuRecyclerView.setLayoutManager(menuLayoutManager);
 
-        menuAdapter.setMenu(pizzaList);
+        menuAdapter.setMenu(this.pizzaList);
     }
 
 }

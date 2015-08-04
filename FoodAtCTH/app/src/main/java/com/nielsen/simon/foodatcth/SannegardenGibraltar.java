@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nielsen.simon.foodatcth.adapters.PizzaMenuAdapter;
@@ -37,6 +38,7 @@ public class SannegardenGibraltar extends AppCompatActivity {
     private RecyclerView menuRecyclerView;
     private PizzaMenuAdapter menuAdapter;
     private RecyclerView.LayoutManager menuLayoutManager;
+    private LinearLayout contentHolder;
 
     private MenuItem mSearchAction;
     private boolean isSearchOpened = false;
@@ -49,6 +51,8 @@ public class SannegardenGibraltar extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.pizza_app_bar);
         setSupportActionBar(toolbar);
+
+        contentHolder = (LinearLayout)findViewById(R.id.contentHolder);
 
         //collapsingToolbar = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         //collapsingToolbar.setTitle("Sannegården");
@@ -66,6 +70,17 @@ public class SannegardenGibraltar extends AppCompatActivity {
         dbHandler = new DbHandler(this);
         menu = dbHandler.getPizzaMenu(DbHandler.PizzaMenu.SANNE_GIBRALTAR);
         menuAdapter.setMenu(menu);
+
+        menuRecyclerView.setVisibility(View.GONE);
+        ArrayList<Integer> groups = new ArrayList<>();
+        for(Pizza pizza: menu){
+            if(!groups.contains(pizza.getGroupNr())){
+                groups.add(pizza.getGroupNr());
+            }
+        }
+        for(Integer groupNr: groups){
+            contentHolder.addView(new CardSanneGroup(this, menu, groupNr));
+        }
     }
 
     public void onBackPressed() {
@@ -104,7 +119,8 @@ public class SannegardenGibraltar extends AppCompatActivity {
         if(isSearchOpened){ //test if the search is open
             editSearch.setText("");
         } else { //open the search entry
-
+            contentHolder.setVisibility(View.GONE);
+            menuRecyclerView.setVisibility(View.VISIBLE);
             action.setDisplayShowCustomEnabled(true); //enable it to display a
             // custom view in the action bar.
             action.setCustomView(R.layout.search_bar);//add the custom view
@@ -179,6 +195,9 @@ public class SannegardenGibraltar extends AppCompatActivity {
         menu = dbHandler.getPizzaMenu(DbHandler.PizzaMenu.SANNE_GIBRALTAR);
         menuAdapter.setMenu(menu);
         Log.v("search", "After close search get db");
+
+        contentHolder.setVisibility(View.VISIBLE);
+        menuRecyclerView.setVisibility(View.GONE);
 
         isSearchOpened = false;
     }
