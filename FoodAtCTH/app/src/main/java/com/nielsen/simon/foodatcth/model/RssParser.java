@@ -1,6 +1,5 @@
-package com.nielsen.simon.foodatcth;
+package com.nielsen.simon.foodatcth.model;
 
-import android.util.Log;
 import android.util.Xml;
 
 import org.xmlpull.v1.XmlPullParser;

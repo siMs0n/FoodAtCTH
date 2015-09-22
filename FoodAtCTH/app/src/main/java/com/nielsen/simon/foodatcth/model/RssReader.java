@@ -1,6 +1,4 @@
-package com.nielsen.simon.foodatcth;
-
-import android.util.Log;
+package com.nielsen.simon.foodatcth.model;
 
 import org.xmlpull.v1.XmlPullParserException;
 

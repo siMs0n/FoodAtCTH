@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -19,8 +17,8 @@ import com.nielsen.simon.foodatcth.database.DbHandlerRSS;
 import com.nielsen.simon.foodatcth.dialog.MenuDetailDialog;
 import com.nielsen.simon.foodatcth.adapters.MenuAdapter;
 import com.nielsen.simon.foodatcth.R;
-import com.nielsen.simon.foodatcth.RssItem;
-import com.nielsen.simon.foodatcth.RssReader;
+import com.nielsen.simon.foodatcth.model.RssItem;
+import com.nielsen.simon.foodatcth.model.RssReader;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

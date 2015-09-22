@@ -1,4 +1,4 @@
-package com.nielsen.simon.foodatcth;
+package com.nielsen.simon.foodatcth.util;
 
 import android.content.Context;
 import android.widget.Toast;

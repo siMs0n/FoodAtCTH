@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.nielsen.simon.foodatcth.adapters.PizzaMenuAdapter;
 import com.nielsen.simon.foodatcth.database.DbHandler;
+import com.nielsen.simon.foodatcth.model.Pizza;
 
 import java.util.ArrayList;
 
@@ -79,10 +80,11 @@ public class SannegardenGibraltar extends AppCompatActivity {
             }
         }
         for(Integer groupNr: groups){
-            contentHolder.addView(new CardSanneGroup(this, menu, groupNr));
+            CardSanneGroup csg = new CardSanneGroup(this, menu, groupNr);
+            contentHolder.addView(csg);
         }
-    }
 
+    }
     public void onBackPressed() {
         if(isSearchOpened) {
             closeSearch();

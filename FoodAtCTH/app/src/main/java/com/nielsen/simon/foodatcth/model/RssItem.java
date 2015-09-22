@@ -1,4 +1,4 @@
-package com.nielsen.simon.foodatcth;
+package com.nielsen.simon.foodatcth.model;
 
 /**
  * Created by Simon on 2015-06-03.

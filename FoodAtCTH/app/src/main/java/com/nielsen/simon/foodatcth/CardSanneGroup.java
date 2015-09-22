@@ -9,6 +9,7 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.nielsen.simon.foodatcth.adapters.PizzaMenuAdapter;
+import com.nielsen.simon.foodatcth.model.Pizza;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class CardSanneGroup extends CardView{
     private int price, groupNr;
     private String title;
     private boolean showPrice, priceSet;
-    List<Pizza> pizzaList;
+    List<Pizza> cardPizzaList;
 
     private RecyclerView menuRecyclerView;
     private PizzaMenuAdapter menuAdapter;
@@ -64,8 +65,8 @@ public class CardSanneGroup extends CardView{
                 }
             }
         }
-        this.pizzaList = groupPizzaList;
-        Log.v("myApp", "List size: " + this.pizzaList.size());
+        cardPizzaList = groupPizzaList;
+        Log.v("myApp", "List size: " + cardPizzaList.size());
         if(showPrice){
             ((TextView)findViewById(R.id.cardPriceText)).setText(price + " kr");
         }else{
@@ -76,11 +77,14 @@ public class CardSanneGroup extends CardView{
         menuRecyclerView = (RecyclerView) findViewById(R.id.cardMenuRecyclerView);
 
         menuAdapter = new PizzaMenuAdapter();
+        menuAdapter.setMenu(cardPizzaList);
         menuRecyclerView.setAdapter(menuAdapter);
         menuLayoutManager = new LinearLayoutManager(getContext());
         menuRecyclerView.setLayoutManager(menuLayoutManager);
 
-        menuAdapter.setMenu(this.pizzaList);
+
+        Log.v("myApp", "Adapter list size: " + menuAdapter.getItemCount());
+        menuRecyclerView.getLayoutParams().height = menuAdapter.getItemCount() * getResources().getDimensionPixelSize(R.dimen.row_height);
     }
 
 }

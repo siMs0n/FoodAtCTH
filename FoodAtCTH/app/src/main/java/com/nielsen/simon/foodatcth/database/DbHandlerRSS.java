@@ -7,10 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.nielsen.simon.foodatcth.Message;
-import com.nielsen.simon.foodatcth.Pizza;
-import com.nielsen.simon.foodatcth.R;
-import com.nielsen.simon.foodatcth.RssItem;
+import com.nielsen.simon.foodatcth.model.RssItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;

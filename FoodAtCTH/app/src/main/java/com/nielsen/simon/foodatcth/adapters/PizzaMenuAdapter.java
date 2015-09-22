@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.nielsen.simon.foodatcth.Pizza;
+import com.nielsen.simon.foodatcth.model.Pizza;
 import com.nielsen.simon.foodatcth.R;
 
 import java.util.ArrayList;

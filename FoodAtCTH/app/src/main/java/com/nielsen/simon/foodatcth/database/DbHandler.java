@@ -8,8 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.nielsen.simon.foodatcth.Message;
-import com.nielsen.simon.foodatcth.Pizza;
+import com.nielsen.simon.foodatcth.util.Message;
+import com.nielsen.simon.foodatcth.model.Pizza;
 import com.nielsen.simon.foodatcth.R;
 
 import java.io.FileOutputStream;

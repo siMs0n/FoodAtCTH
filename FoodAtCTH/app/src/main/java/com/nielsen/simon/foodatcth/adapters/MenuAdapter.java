@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nielsen.simon.foodatcth.R;
-import com.nielsen.simon.foodatcth.RssItem;
+import com.nielsen.simon.foodatcth.model.RssItem;
 
 import java.util.ArrayList;
 import java.util.List;
